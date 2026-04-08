@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>우주라이크 — Woojulike</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --bg3: #1a1a24;
+      --surface: #1e1e2a;
+      --surface2: #252534;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.12);
+      --accent: #6B5FE4;
+      --accent2: #8B7FF4;
+      --accent-glow: rgba(107,95,228,0.25);
+      --teal: #2DD4BF;
+      --teal-dim: rgba(45,212,191,0.15);
+      --text: #f0f0f8;
+      --text2: #9898b8;
+      --text3: #5c5c7a;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NOISE TEXTURE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* GLOW ORBS */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(107,95,228,0.12) 0%, transparent 70%);
+      top: -200px; left: -200px;
+    }
+    .orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(45,212,191,0.08) 0%, transparent 70%);
+      bottom: 10%; right: -150px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,15,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent2); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--text2);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      text-align: center;
+    }
+
+    .hero-inner { max-width: 760px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--surface);
+      border: 0.5px solid var(--border2);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text2);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-company {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -3px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 50%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .hero-sub {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(18px, 3vw, 26px);
+      color: var(--text2);
+      margin-bottom: 48px;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text3);
+      max-width: 480px;
+      margin: 0 auto 56px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fadeUp 0.8s 0.4s ease both;
+      box-shadow: 0 0 40px var(--accent-glow);
+    }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px var(--accent-glow);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SCROLL HINT */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text3);
+      font-size: 12px;
+      letter-spacing: 1px;
+      animation: fadeUp 1s 0.8s ease both;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--text3), transparent);
+      animation: scrollDown 2s ease-in-out infinite;
+    }
+    @keyframes scrollDown {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* APP SECTION */
+    .app-section {
+      padding: 120px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 16px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text2);
+      max-width: 540px;
+      margin-bottom: 64px;
+      line-height: 1.8;
+    }
+
+    /* APP CARD — HERO CARD */
+    .app-hero-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border2);
+      border-radius: 24px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .app-hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+      opacity: 0.5;
+    }
+    .app-hero-card:hover { border-color: rgba(107,95,228,0.3); }
+
+    .app-icon {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--accent), #9b8ff8);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 28px;
+      box-shadow: 0 8px 32px var(--accent-glow);
+    }
+
+    .app-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .app-tagline {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--teal);
+      margin-bottom: 20px;
+    }
+
+    .app-description {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .app-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      padding: 5px 14px;
+      background: var(--bg3);
+      border: 0.5px solid var(--border2);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text2);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .tag.accent {
+      background: rgba(107,95,228,0.12);
+      border-color: rgba(107,95,228,0.3);
+      color: var(--accent2);
+    }
+    .tag.teal {
+      background: rgba(45,212,191,0.1);
+      border-color: rgba(45,212,191,0.25);
+      color: var(--teal);
+    }
+
+    /* VISUAL SIDE */
+    .app-visual {
+      position: relative;
+    }
+
+    .mode-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mode-card {
+      background: var(--bg3);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.25s;
+      cursor: default;
+    }
+    .mode-card:hover {
+      background: var(--surface2);
+      border-color: var(--border2);
+      transform: translateX(4px);
+    }
+
+    .mode-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .mode-icon.purple { background: rgba(107,95,228,0.15); }
+    .mode-icon.teal   { background: rgba(45,212,191,0.12); }
+    .mode-icon.amber  { background: rgba(251,191,36,0.12); }
+
+    .mode-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .mode-desc {
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    /* FEATURE GRID */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 0;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-glow), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-4px);
+    }
+    .feature-card:hover::after { opacity: 1; }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-text {
+      font-size: 13px;
+      color: var(--text3);
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* TECH STACK */
+    .tech-section {
+      padding: 80px 40px 120px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .tech-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 999px;
+      font-size: 14px;
+      color: var(--text2);
+      font-family: 'Space Grotesk', sans-serif;
+      transition: all 0.2s;
+    }
+    .tech-pill:hover {
+      border-color: var(--accent2);
+      color: var(--text);
+    }
+    .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .footer-logo span { color: var(--accent2); }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text3);
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 0.5px;
+      background: var(--border);
+      margin: 0 40px;
+      width: calc(100% - 80px);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 80px; }
+      .app-section, .tech-section { padding: 80px 24px; }
+      .app-hero-card {
+        grid-template-columns: 1fr;
+        padding: 32px 24px;
+      }
+      .feature-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 40px 24px; }
+    }
+
+    /* INTERSECTION OBSERVER ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">우주라이크<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#app">앱 소개</a></li>
+    <li><a href="#features">기능</a></li>
+    <li><a href="#tech">기술 스택</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      독립 iOS 개발 스튜디오
+    </div>
+    <h1 class="hero-company">우주라이크</h1>
+    <p class="hero-sub">Woojulike · Making apps that just work.</p>
+    <p class="hero-desc">온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.</p>
+    <a href="#app" class="hero-cta">
+      앱 살펴보기
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 3L13 8L8 13M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- APP SECTION -->
+<section class="app-section" id="app">
+  <p class="section-label reveal">Our App</p>
+  <h2 class="section-title reveal reveal-delay-1">회의, 강의, 협상<br>모든 대화를 담다.</h2>
+  <p class="section-desc reveal reveal-delay-2">음성을 녹음하고 온디바이스 AI가 즉시 요약해줍니다. 네트워크 없이, 프라이버시 완벽 보호.</p>
+
+  <div class="app-hero-card reveal">
+    <div class="app-info">
+      <div class="app-icon">🎙</div>
+      <h3 class="app-name">MeetAgent</h3>
+      <p class="app-tagline">Your AI-powered meeting partner</p>
+      <p class="app-description">
+        녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>
+        강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.
+      </p>
+      <div class="app-tags">
+        <span class="tag accent">온디바이스 AI</span>
+        <span class="tag teal">완전 오프라인</span>
+        <span class="tag">iOS Native</span>
+        <span class="tag">SwiftUI</span>
+      </div>
+    </div>
+
+    <div class="app-visual">
+      <div class="mode-cards">
+        <div class="mode-card">
+          <div class="mode-icon purple">📖</div>
+          <div>
+            <div class="mode-name">강의 모드</div>
+            <div class="mode-desc">핵심 개념 · 주요 내용 · 핵심 정리 자동 추출</div>
+          </div>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon teal">👥</div>
+          <div>
+            <div class="mode-name">회의 모드</div>
+            <div class="mode-desc">결정 사항 · 액션 아이템 · 주요 논의 정리</div>
+          </div>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon amber">🤝</div>
+          <div>
+            <div class="mode-name">계약 모드</div>
+            <div class="mode-desc">합의 사항 · 주요 조건 · 미합의 사항 분류</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURE GRID -->
+  <div class="feature-grid" id="features">
+    <div class="feature-card reveal">
+      <span class="feature-icon">🔒</span>
+      <p class="feature-name">완전 온디바이스</p>
+      <p class="feature-text">STT와 AI 요약 모두 기기 안에서. 데이터가 서버로 나가지 않아 프라이버시가 완벽하게 보호됩니다.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <span class="feature-icon">⚡</span>
+      <p class="feature-name">무제한 녹음</p>
+      <p class="feature-text">WhisperKit 기반 10초 청크 실시간 처리로 1분 제한 없이 긴 강의와 회의도 끊김 없이 녹음합니다.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <span class="feature-icon">🌐</span>
+      <p class="feature-name">9개 언어 지원</p>
+      <p class="feature-text">한국어, 영어, 일본어, 중국어, 프랑스어 등 9개 언어 STT를 설정에서 즉시 전환할 수 있습니다.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <span class="feature-icon">🔍</span>
+      <p class="feature-name">통합 검색</p>
+      <p class="feature-text">제목, 요약 내용, 원본 텍스트를 한 번에 검색. 지난 회의 내용을 빠르게 찾아냅니다.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <span class="feature-icon">🔊</span>
+      <p class="feature-name">요약 읽어주기</p>
+      <p class="feature-text">TTS로 요약 결과를 음성으로 청취. 운전 중이나 이동 중에도 내용을 확인할 수 있습니다.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <span class="feature-icon">📋</span>
+      <p class="feature-name">스마트 복사</p>
+      <p class="feature-text">마크다운 제거 순수 텍스트 또는 MD 형식 그대로, 용도에 맞게 두 가지 방식으로 복사합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="tech-section" id="tech">
+  <p class="section-label reveal">Technology</p>
+  <h2 class="section-title reveal reveal-delay-1">외부 의존 없이,<br>Apple 생태계만으로.</h2>
+
+  <div class="tech-strip reveal reveal-delay-2">
+    <div class="tech-pill"><div class="tech-dot" style="background:#6B5FE4"></div>SwiftUI</div>
+    <div class="tech-pill"><div class="tech-dot" style="background:#2DD4BF"></div>WhisperKit (CoreML)</div>
+    <div class="tech-pill"><div class="tech-dot" style="background:#f59e0b"></div>Apple Foundation Model</div>
+    <div class="tech-pill"><div class="tech-dot" style="background:#6B5FE4"></div>SwiftData</div>
+    <div class="tech-pill"><div class="tech-dot" style="background:#2DD4BF"></div>AVSpeechSynthesizer</div>
+    <div class="tech-pill"><div class="tech-dot" style="background:#9b8ff8"></div>Clean Architecture</div>
+    <div class="tech-pill"><div class="tech-dot" style="background:#9b8ff8"></div>Swift Package Manager</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">우주라이크<span>.</span></div>
+  <p class="footer-copy">© 2025 우주라이크. All rights reserved.</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
