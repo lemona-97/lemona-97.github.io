@@ -1,980 +1,577 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>우주라이크 — UZULIKE</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #0a0a0f;
-      --bg2: #111118;
-      --bg3: #1a1a24;
-      --surface: #1e1e2a;
-      --surface2: #252534;
-      --border: rgba(255,255,255,0.07);
-      --border2: rgba(255,255,255,0.12);
-      --accent: #6B5FE4;
-      --accent2: #8B7FF4;
-      --accent-glow: rgba(107,95,228,0.25);
-      --teal: #2DD4BF;
-      --teal-dim: rgba(45,212,191,0.15);
-      --text: #f0f0f8;
-      --text2: #9898b8;
-      --text3: #5c5c7a;
-      --radius: 16px;
-      --radius-sm: 10px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우주라이크 — UZULIKE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Space+Grotesk:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg2: #111118;
+            --bg3: #1a1a24;
+            --surface: #1e1e2a;
+            --surface2: #252534;
+            --border: rgba(255,255,255,0.07);
+            --border2: rgba(255,255,255,0.12);
+            --accent: #6B5FE4;
+            --accent2: #8B7FF4;
+            --accent-glow: rgba(107,95,228,0.25);
+            --teal: #2DD4BF;
+            --teal-dim: rgba(45,212,191,0.15);
+            --text: #f0f0f8;
+            --text2: #9898b8;
+            --text3: #5c5c7a;
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
-    html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Noto Sans KR', sans-serif;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
 
-    /* NOISE TEXTURE OVERLAY */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
+        .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
+        .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(107,95,228,0.12) 0%, transparent 70%); top: -200px; left: -200px; }
+        .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(45,212,191,0.08) 0%, transparent 70%); bottom: 10%; right: -150px; }
 
-    /* GLOW ORBS */
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(120px);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(107,95,228,0.12) 0%, transparent 70%);
-      top: -200px; left: -200px;
-    }
-    .orb-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(45,212,191,0.08) 0%, transparent 70%);
-      bottom: 10%; right: -150px;
-    }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 20px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(10,10,15,0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--border);
+        }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(10,10,15,0.7);
-      backdrop-filter: blur(20px);
-      border-bottom: 0.5px solid var(--border);
-    }
+        .nav-logo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); text-decoration: none; }
+        .nav-logo span { color: var(--accent2); }
 
-    .nav-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      color: var(--text);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--accent2); }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { font-size: 14px; color: var(--text2); text-decoration: none; transition: color 0.2s; letter-spacing: 0.3px; }
+        .nav-links a:hover { color: var(--text); }
 
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 14px;
-      color: var(--text2);
-      text-decoration: none;
-      transition: color 0.2s;
-      letter-spacing: 0.3px;
-    }
-    .nav-links a:hover { color: var(--text); }
+        section { position: relative; z-index: 1; }
 
-    /* SECTIONS */
-    section {
-      position: relative;
-      z-index: 1;
-    }
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 120px 40px 80px;
+            text-align: center;
+        }
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 40px 80px;
-      text-align: center;
-    }
+        .hero-inner { max-width: 760px; }
 
-    .hero-inner { max-width: 760px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px;
+            background: var(--surface); border: 0.5px solid var(--border2); border-radius: 999px;
+            font-size: 12px; color: var(--text2); letter-spacing: 1.5px; text-transform: uppercase;
+            margin-bottom: 32px;
+        }
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      background: var(--surface);
-      border: 0.5px solid var(--border2);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--text2);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 32px;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--teal);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
+        .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: pulse 2s ease-in-out infinite; }
 
-    .hero-company {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(48px, 8vw, 96px);
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -3px;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 50%, var(--teal) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: fadeUp 0.8s ease forwards;
-    }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
 
-    .hero-sub {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: clamp(18px, 3vw, 26px);
-      color: var(--text2);
-      margin-bottom: 48px;
-      animation: fadeUp 0.8s 0.15s ease both;
-    }
+        .hero-company {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(48px, 8vw, 96px); font-weight: 700; line-height: 1; letter-spacing: -3px; margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 50%, var(--teal) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: fadeUp 0.8s ease forwards;
+        }
 
-    .hero-desc {
-      font-size: 16px;
-      color: var(--text3);
-      max-width: 480px;
-      margin: 0 auto 56px;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
+        .hero-sub { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(18px, 3vw, 26px); color: var(--text2); margin-bottom: 48px; animation: fadeUp 0.8s 0.15s ease both; }
+        .hero-desc { font-size: 16px; color: var(--text3); max-width: 480px; margin: 0 auto 56px; animation: fadeUp 0.8s 0.3s ease both; }
 
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 32px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 999px;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: fadeUp 0.8s 0.4s ease both;
-      box-shadow: 0 0 40px var(--accent-glow);
-    }
-    .hero-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 40px var(--accent-glow);
-    }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 32px; background: var(--accent); color: #fff; border-radius: 999px;
+            text-decoration: none; font-size: 15px; font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: fadeUp 0.8s 0.4s ease both;
+            box-shadow: 0 0 40px var(--accent-glow);
+        }
+        .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 40px var(--accent-glow); }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* SCROLL HINT */
-    .scroll-hint {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: var(--text3);
-      font-size: 12px;
-      letter-spacing: 1px;
-      animation: fadeUp 1s 0.8s ease both;
-    }
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--text3), transparent);
-      animation: scrollDown 2s ease-in-out infinite;
-    }
-    @keyframes scrollDown {
-      0% { transform: scaleY(0); transform-origin: top; }
-      50% { transform: scaleY(1); transform-origin: top; }
-      51% { transform: scaleY(1); transform-origin: bottom; }
-      100% { transform: scaleY(0); transform-origin: bottom; }
-    }
+        .scroll-hint {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            color: var(--text3); font-size: 12px; letter-spacing: 1px;
+            animation: fadeUp 1s 0.8s ease both;
+        }
+        .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--text3), transparent); animation: scrollDown 2s ease-in-out infinite; }
 
-    /* APP SECTION */
-    .app-section {
-      padding: 120px 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+        @keyframes scrollDown {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
 
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 16px;
-      font-family: 'Space Grotesk', sans-serif;
-    }
+        .app-section { padding: 120px 40px; max-width: 1100px; margin: 0 auto; }
 
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 700;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
+        .section-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent2); margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif; }
+        .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px, 5vw, 52px); font-weight: 700; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px; }
+        .section-desc { font-size: 16px; color: var(--text2); max-width: 540px; margin-bottom: 64px; line-height: 1.8; }
 
-    .section-desc {
-      font-size: 16px;
-      color: var(--text2);
-      max-width: 540px;
-      margin-bottom: 64px;
-      line-height: 1.8;
-    }
+        .app-hero-card {
+            background: var(--surface); border: 0.5px solid var(--border2); border-radius: 24px;
+            padding: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+            margin-bottom: 32px; position: relative; overflow: hidden; transition: border-color 0.3s;
+        }
+        .app-hero-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent2), transparent); opacity: 0.5;
+        }
+        .app-hero-card:hover { border-color: rgba(107,95,228,0.3); }
 
-    /* APP CARD — HERO CARD */
-    .app-hero-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border2);
-      border-radius: 24px;
-      padding: 48px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: center;
-      margin-bottom: 32px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s;
-    }
-    .app-hero-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
-      opacity: 0.5;
-    }
-    .app-hero-card:hover { border-color: rgba(107,95,228,0.3); }
+        .app-icon { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 24px; box-shadow: 0 8px 32px var(--accent-glow); overflow: hidden; flex-shrink: 0; }
+        .app-icon svg { width: 100%; height: 100%; }
 
-    .app-icon {
-      width: 72px; height: 72px;
-      border-radius: 18px;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 32px var(--accent-glow);
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-    .app-icon svg {
-      width: 100%; height: 100%;
-    }
+        .app-name { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
+        .app-tagline { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 18px; color: var(--teal); margin-bottom: 20px; }
+        .app-description { font-size: 15px; color: var(--text2); line-height: 1.8; margin-bottom: 28px; }
 
-    .app-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: -1px;
-      margin-bottom: 8px;
-    }
+        .app-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { padding: 5px 14px; background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 999px; font-size: 12px; color: var(--text2); font-family: 'Space Grotesk', sans-serif; }
+        .tag.accent { background: rgba(107,95,228,0.12); border-color: rgba(107,95,228,0.3); color: var(--accent2); }
+        .tag.teal { background: rgba(45,212,191,0.1); border-color: rgba(45,212,191,0.25); color: var(--teal); }
 
-    .app-tagline {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: 18px;
-      color: var(--teal);
-      margin-bottom: 20px;
-    }
+        .mode-cards { display: flex; flex-direction: column; gap: 12px; }
+        .mode-card {
+            background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm);
+            padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+            transition: all 0.25s; cursor: default;
+        }
+        .mode-card:hover { background: var(--surface2); border-color: var(--border2); transform: translateX(4px); }
+        .mode-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .mode-icon.purple { background: rgba(107,95,228,0.15); }
+        .mode-icon.teal { background: rgba(45,212,191,0.12); }
+        .mode-icon.amber { background: rgba(251,191,36,0.12); }
+        .mode-name { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+        .mode-desc { font-size: 12px; color: var(--text3); }
 
-    .app-description {
-      font-size: 15px;
-      color: var(--text2);
-      line-height: 1.8;
-      margin-bottom: 28px;
-    }
+        /* 3열 그리드 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
 
-    .app-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .tag {
-      padding: 5px 14px;
-      background: var(--bg3);
-      border: 0.5px solid var(--border2);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--text2);
-      font-family: 'Space Grotesk', sans-serif;
-    }
-    .tag.accent {
-      background: rgba(107,95,228,0.12);
-      border-color: rgba(107,95,228,0.3);
-      color: var(--accent2);
-    }
-    .tag.teal {
-      background: rgba(45,212,191,0.1);
-      border-color: rgba(45,212,191,0.25);
-      color: var(--teal);
-    }
+        /* 하단 NEW 배지용 래퍼 */
+        .feature-card-wrap { position: relative; }
+        .new-badge {
+            position: absolute;
+            top: 12px; right: 12px;
+            font-size: 10px; font-weight: 700; letter-spacing: 1px;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, var(--accent), var(--teal));
+            color: #fff;
+            border-radius: 999px;
+            font-family: 'Space Grotesk', sans-serif;
+            z-index: 2;
+            pointer-events: none;
+        }
 
-    /* VISUAL SIDE */
-    .app-visual {
-      position: relative;
-    }
+        .feature-card {
+            background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius);
+            padding: 28px; transition: all 0.25s; position: relative; overflow: hidden; height: 100%;
+        }
+        .feature-card::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--accent-glow), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .feature-card:hover { border-color: var(--border2); transform: translateY(-4px); }
+        .feature-card:hover::after { opacity: 1; }
 
-    .mode-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+        .feature-icon { font-size: 24px; margin-bottom: 16px; display: block; }
+        .feature-name { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 8px; position: relative; z-index: 1; }
+        .feature-text { font-size: 13px; color: var(--text3); line-height: 1.7; position: relative; z-index: 1; }
 
-    .mode-card {
-      background: var(--bg3);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: all 0.25s;
-      cursor: default;
-    }
-    .mode-card:hover {
-      background: var(--surface2);
-      border-color: var(--border2);
-      transform: translateX(4px);
-    }
+        .tech-section { padding: 80px 40px 120px; max-width: 1100px; margin: 0 auto; }
+        .tech-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+        .tech-pill {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 20px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 999px;
+            font-size: 14px; color: var(--text2); font-family: 'Space Grotesk', sans-serif; transition: all 0.2s;
+        }
+        .tech-pill:hover { border-color: var(--accent2); color: var(--text); }
+        .tech-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    .mode-icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    .mode-icon.purple { background: rgba(107,95,228,0.15); }
-    .mode-icon.teal   { background: rgba(45,212,191,0.12); }
-    .mode-icon.amber  { background: rgba(251,191,36,0.12); }
+        footer {
+            border-top: 0.5px solid var(--border); padding: 48px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: relative; z-index: 1;
+        }
+        .footer-logo { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); }
+        .footer-logo span { color: var(--accent2); }
+        .footer-copy { font-size: 13px; color: var(--text3); }
 
-    .mode-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 2px;
-    }
-    .mode-desc {
-      font-size: 12px;
-      color: var(--text3);
-    }
+        .lang-switcher { position: relative; }
+        .lang-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px; background: var(--surface); border: 0.5px solid var(--border2); border-radius: 999px;
+            font-size: 13px; color: var(--text2); cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .lang-btn:hover { border-color: var(--accent2); color: var(--text); }
+        .lang-btn svg { transition: transform 0.2s; }
+        .lang-btn.open svg { transform: rotate(180deg); }
 
-    /* FEATURE GRID */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 0;
-    }
+        .lang-dropdown {
+            display: none; position: absolute; top: calc(100% + 8px); right: 0;
+            background: var(--surface); border: 0.5px solid var(--border2); border-radius: 12px;
+            overflow: hidden; min-width: 130px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+        }
+        .lang-dropdown.open { display: block; }
+        .lang-option {
+            display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+            font-size: 13px; color: var(--text2); cursor: pointer; transition: background 0.15s;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .lang-option:hover { background: var(--surface2); color: var(--text); }
+        .lang-option.active { color: var(--accent2); }
 
-    .feature-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-    .feature-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--accent-glow), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .feature-card:hover {
-      border-color: var(--border2);
-      transform: translateY(-4px);
-    }
-    .feature-card:hover::after { opacity: 1; }
+        .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
 
-    .feature-icon {
-      font-size: 24px;
-      margin-bottom: 16px;
-      display: block;
-    }
+        @media (max-width: 900px) {
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+        }
 
-    .feature-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .feature-text {
-      font-size: 13px;
-      color: var(--text3);
-      line-height: 1.7;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* TECH STACK */
-    .tech-section {
-      padding: 80px 40px 120px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .tech-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 40px;
-    }
-
-    .tech-pill {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 20px;
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 999px;
-      font-size: 14px;
-      color: var(--text2);
-      font-family: 'Space Grotesk', sans-serif;
-      transition: all 0.2s;
-    }
-    .tech-pill:hover {
-      border-color: var(--accent2);
-      color: var(--text);
-    }
-    .tech-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 0.5px solid var(--border);
-      padding: 48px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .footer-logo span { color: var(--accent2); }
-
-    .footer-copy {
-      font-size: 13px;
-      color: var(--text3);
-    }
-
-    /* DIVIDER */
-    .divider {
-      width: 100%;
-      height: 0.5px;
-      background: var(--border);
-      margin: 0 40px;
-      width: calc(100% - 80px);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      nav { padding: 16px 20px; }
-      .nav-links { display: none; }
-      .hero { padding: 100px 24px 80px; }
-      .app-section, .tech-section { padding: 80px 24px; }
-      .app-hero-card {
-        grid-template-columns: 1fr;
-        padding: 32px 24px;
-      }
-      .feature-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 16px; text-align: center; padding: 40px 24px; }
-    }
-
-    /* INTERSECTION OBSERVER ANIMATIONS */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-
-    .lang-switcher { position: relative; }
-    .lang-btn {
-      display: flex; align-items: center; gap: 6px;
-      padding: 7px 14px;
-      background: var(--surface);
-      border: 0.5px solid var(--border2);
-      border-radius: 999px;
-      font-size: 13px; color: var(--text2); cursor: pointer;
-      font-family: 'Space Grotesk', sans-serif;
-      transition: all 0.2s; white-space: nowrap;
-    }
-    .lang-btn:hover { border-color: var(--accent2); color: var(--text); }
-    .lang-btn svg { transition: transform 0.2s; }
-    .lang-btn.open svg { transform: rotate(180deg); }
-    .lang-dropdown {
-      display: none; position: absolute;
-      top: calc(100% + 8px); right: 0;
-      background: var(--surface);
-      border: 0.5px solid var(--border2);
-      border-radius: 12px; overflow: hidden;
-      min-width: 130px; z-index: 200;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-    }
-    .lang-dropdown.open { display: block; }
-    .lang-option {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 16px; font-size: 13px; color: var(--text2);
-      cursor: pointer; transition: background 0.15s;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-    .lang-option:hover { background: var(--surface2); color: var(--text); }
-    .lang-option.active { color: var(--accent2); }
-  </style>
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 24px 80px; }
+            .app-section, .tech-section { padding: 80px 24px; }
+            .app-hero-card { grid-template-columns: 1fr; padding: 32px 24px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 16px; text-align: center; padding: 40px 24px; }
+        }
+    </style>
 </head>
 <body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">우주라이크 <span>UZULIKE</span></a>
-  <div style="display:flex;align-items:center;gap:24px;">
-    <ul class="nav-links">
-      <li><a href="#app" data-i18n="nav_app">앱 소개</a></li>
-      <li><a href="#features" data-i18n="nav_features">기능</a></li>
-      <li><a href="#tech" data-i18n="nav_tech">기술 스택</a></li>
-    </ul>
-    <div class="lang-switcher">
-      <button class="lang-btn" id="langBtn">
-        🌐 KO
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="lang-dropdown" id="langDropdown">
-        <div class="lang-option active" data-lang="ko">🇰🇷 한국어</div>
-        <div class="lang-option" data-lang="en">🇺🇸 English</div>
-        <div class="lang-option" data-lang="ja">🇯🇵 日本語</div>
-        <div class="lang-option" data-lang="zh">🇨🇳 中文</div>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      <span data-i18n="badge">Small studio. Big ideas.</span>
-    </div>
-    <h1 class="hero-company">우주라이크</h1>
-    <p class="hero-sub" data-i18n="hero_sub">UZULIKE · Making apps that just work.</p>
-    <p class="hero-desc" data-i18n="hero_desc">온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.</p>
-    <a href="#app" class="hero-cta">
-      <span data-i18n="hero_cta">앱 살펴보기</span>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 3L13 8L8 13M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-  </div>
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- APP SECTION -->
-<section class="app-section" id="app">
-  <p class="section-label reveal" data-i18n="sec_label_app">Our App</p>
-  <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_app">회의, 강의, 협상<br>모든 대화를 담다.</h2>
-  <p class="section-desc reveal reveal-delay-2" data-i18n="sec_desc_app">음성을 녹음하고 온디바이스 AI가 즉시 요약해줍니다. 네트워크 없이, 프라이버시 완벽 보호.</p>
-
-  <div class="app-hero-card reveal">
-    <div class="app-info">
-      <div class="app-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-          <defs>
-            <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#130740"/>
-              <stop offset="48%" stop-color="#4B1FD4"/>
-              <stop offset="100%" stop-color="#1740C0"/>
-            </linearGradient>
-            <radialGradient id="centerGlow" cx="50%" cy="42%" r="42%">
-              <stop offset="0%" stop-color="#7B36FF" stop-opacity="0.65"/>
-              <stop offset="100%" stop-color="#130740" stop-opacity="0"/>
-            </radialGradient>
-            <linearGradient id="micGrad" x1="15%" y1="0%" x2="85%" y2="100%">
-              <stop offset="0%" stop-color="#FFFFFF"/>
-              <stop offset="100%" stop-color="#DDD4FF"/>
-            </linearGradient>
-            <filter id="micBloom" x="-45%" y="-45%" width="190%" height="190%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
-              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-            </filter>
-            <filter id="whiteGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
-              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-            </filter>
-            <filter id="starBloom" x="-70%" y="-70%" width="240%" height="240%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur"/>
-              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-            </filter>
-          </defs>
-          <rect width="1024" height="1024" fill="url(#bg)"/>
-          <rect width="1024" height="1024" fill="url(#centerGlow)"/>
-          <circle cx="852" cy="172" r="210" fill="#6B35F5" opacity="0.14"/>
-          <circle cx="852" cy="172" r="118" fill="#9D6BF7" opacity="0.10"/>
-          <circle cx="162" cy="852" r="182" fill="#2563EB" opacity="0.11"/>
-          <circle cx="162" cy="852" r="96" fill="#3B82F6" opacity="0.08"/>
-          <circle cx="512" cy="330" r="168" fill="none" stroke="#7C3AFF" stroke-width="2" opacity="0.22"/>
-          <circle cx="512" cy="330" r="220" fill="none" stroke="#6B35F5" stroke-width="1.5" opacity="0.13"/>
-          <rect x="420" y="172" width="184" height="308" rx="92" fill="url(#micGrad)" filter="url(#micBloom)"/>
-          <rect x="464" y="272" width="96" height="15" rx="7.5" fill="#3A14C0" opacity="0.30"/>
-          <rect x="464" y="306" width="96" height="15" rx="7.5" fill="#3A14C0" opacity="0.26"/>
-          <rect x="464" y="340" width="72" height="15" rx="7.5" fill="#3A14C0" opacity="0.18"/>
-          <path d="M 336,410 Q 336,606 512,606 Q 688,606 688,410" stroke="white" stroke-width="46" fill="none" stroke-linecap="round" filter="url(#whiteGlow)" opacity="0.92"/>
-          <line x1="512" y1="606" x2="512" y2="696" stroke="white" stroke-width="46" stroke-linecap="round" filter="url(#whiteGlow)" opacity="0.92"/>
-          <line x1="374" y1="696" x2="650" y2="696" stroke="white" stroke-width="46" stroke-linecap="round" filter="url(#whiteGlow)" opacity="0.92"/>
-          <rect x="144" y="750" width="736" height="200" rx="32" fill="white" opacity="0.055"/>
-          <rect x="144" y="750" width="736" height="200" rx="32" fill="none" stroke="white" stroke-width="1.2" opacity="0.13"/>
-          <rect x="192" y="786" width="288" height="20" rx="10" fill="white" opacity="0.72"/>
-          <rect x="192" y="820" width="492" height="20" rx="10" fill="white" opacity="0.52"/>
-          <rect x="192" y="854" width="380" height="20" rx="10" fill="white" opacity="0.36"/>
-          <rect x="192" y="888" width="208" height="20" rx="10" fill="white" opacity="0.20"/>
-          <g filter="url(#starBloom)"><path d="M762,114 L773,144 L803,155 L773,166 L762,196 L751,166 L721,155 L751,144 Z" fill="#FBBF24" opacity="0.96"/></g>
-          <g filter="url(#starBloom)"><path d="M812,304 L819,322 L837,329 L819,336 L812,354 L805,336 L787,329 L805,322 Z" fill="#FCD34D" opacity="0.86"/></g>
-          <circle cx="852" cy="418" r="10" fill="#FBBF24" opacity="0.52"/>
-          <g filter="url(#starBloom)"><path d="M228,234 L236,254 L256,262 L236,270 L228,290 L220,270 L200,262 L220,254 Z" fill="#C4B5FD" opacity="0.92"/></g>
-          <circle cx="180" cy="338" r="8" fill="#A78BFA" opacity="0.58"/>
-          <path d="M276,402 L279,412 L289,415 L279,418 L276,428 L273,418 L263,415 L273,412 Z" fill="#DDD6FE" opacity="0.52"/>
-          <g filter="url(#starBloom)"><path d="M808,796 L815,816 L835,823 L815,830 L808,850 L801,830 L781,823 L801,816 Z" fill="#FBBF24" opacity="0.90"/></g>
-          <circle cx="858" cy="878" r="7" fill="#FCD34D" opacity="0.42"/>
-          <circle cx="162" cy="796" r="6" fill="#C4B5FD" opacity="0.40"/>
-        </svg>
-      </div>
-      <h3 class="app-name">MeetAgent</h3>
-      <p class="app-tagline" data-i18n="app_tagline">Your AI-powered meeting partner</p>
-      <p class="app-description">
-        <span data-i18n="app_desc">녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>
-        강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.</span>
-      </p>
-      <div class="app-tags">
-        <span class="tag accent">온디바이스 AI</span>
-        <span class="tag teal">완전 오프라인</span>
-        <span class="tag">iOS Native</span>
-        <span class="tag">SwiftUI</span>
-      </div>
-    </div>
-
-    <div class="app-visual">
-      <div class="mode-cards">
-        <div class="mode-card">
-          <div class="mode-icon purple">📖</div>
-          <div>
-            <div class="mode-name" data-i18n="mode1_name">강의 모드</div>
-            <div class="mode-desc" data-i18n="mode1_desc">핵심 개념 · 주요 내용 · 핵심 정리 자동 추출</div>
-          </div>
+    <nav>
+        <a href="#" class="nav-logo">우주라이크 <span>UZULIKE</span></a>
+        <ul class="nav-links">
+            <li><a href="#app" data-i18n="nav_app">앱 소개</a></li>
+            <li><a href="#features" data-i18n="nav_features">기능</a></li>
+            <li><a href="#tech" data-i18n="nav_tech">기술 스택</a></li>
+        </ul>
+        <div class="lang-switcher">
+            <button id="langBtn" class="lang-btn">🌐 KO <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+            <div id="langDropdown" class="lang-dropdown">
+                <div class="lang-option active" data-lang="ko">🇰🇷 한국어</div>
+                <div class="lang-option" data-lang="en">🇺🇸 English</div>
+                <div class="lang-option" data-lang="ja">🇯🇵 日本語</div>
+                <div class="lang-option" data-lang="zh">🇨🇳 中文</div>
+            </div>
         </div>
-        <div class="mode-card">
-          <div class="mode-icon teal">👥</div>
-          <div>
-            <div class="mode-name" data-i18n="mode2_name">회의 모드</div>
-            <div class="mode-desc" data-i18n="mode2_desc">결정 사항 · 액션 아이템 · 주요 논의 정리</div>
-          </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                <span data-i18n="badge">Small studio. Big ideas.</span>
+            </div>
+            <h1 class="hero-company">우주라이크</h1>
+            <p class="hero-sub" data-i18n="hero_sub">UZULIKE · Making apps that just work.</p>
+            <p class="hero-desc" data-i18n="hero_desc">온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.</p>
+            <a href="#app" class="hero-cta" data-i18n="hero_cta">앱 살펴보기</a>
+            <div class="scroll-hint">
+                <div class="scroll-line"></div>
+            </div>
         </div>
-        <div class="mode-card">
-          <div class="mode-icon amber">🤝</div>
-          <div>
-            <div class="mode-name" data-i18n="mode3_name">계약 모드</div>
-            <div class="mode-desc" data-i18n="mode3_desc">합의 사항 · 주요 조건 · 미합의 사항 분류</div>
-          </div>
+    </section>
+
+    <section id="app" class="app-section">
+        <div class="section-label reveal" data-i18n="sec_label_app">Our App</div>
+        <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_app">회의, 강의, 협상<br>모든 대화를 담다.</h2>
+        <p class="section-desc reveal reveal-delay-2" data-i18n="sec_desc_app">음성을 녹음하고 온디바이스 AI가 즉시 요약해줍니다. 네트워크 없이, 프라이버시 완벽 보호.</p>
+
+        <div class="app-hero-card reveal reveal-delay-3">
+            <div>
+                <div class="app-icon">
+                    <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="72" height="72" rx="18" fill="url(#grad)"/>
+                        <defs>
+                            <linearGradient id="grad" x1="0" y1="0" x2="72" y2="72">
+                                <stop offset="0%" stop-color="#6B5FE4"/>
+                                <stop offset="100%" stop-color="#2DD4BF"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="28" y="18" width="16" height="24" rx="8" fill="white" opacity="0.9"/>
+                        <path d="M20 36c0 8.837 7.163 16 16 16s16-7.163 16-16" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <line x1="36" y1="52" x2="36" y2="58" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <line x1="28" y1="58" x2="44" y2="58" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3 class="app-name">MeetAgent</h3>
+                <p class="app-tagline" data-i18n="app_tagline">Your AI-powered meeting partner</p>
+                <p class="app-description" data-i18n="app_desc">녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.<br>앱이 종료돼도 녹음이 자동 저장되고, 다음 실행 시 AI 요약까지 자동 완성됩니다.</p>
+                <div class="app-tags">
+                    <span class="tag accent" data-i18n="tag_ondevice">온디바이스 AI</span>
+                    <span class="tag teal" data-i18n="tag_native">iOS Native</span>
+                    <span class="tag accent" data-i18n="tag_swiftui">SwiftUI</span>
+                    <span class="tag teal" data-i18n="tag_dynamicisland">Dynamic Island</span>
+                </div>
+            </div>
+
+            <div class="app-visual">
+                <div class="mode-cards">
+                    <div class="mode-card">
+                        <div class="mode-icon purple">📖</div>
+                        <div>
+                            <div class="mode-name" data-i18n="mode1_name">강의 모드</div>
+                            <div class="mode-desc" data-i18n="mode1_desc">핵심 개념 · 주요 내용 · 핵심 정리 자동 추출</div>
+                        </div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon teal">👥</div>
+                        <div>
+                            <div class="mode-name" data-i18n="mode2_name">회의 모드</div>
+                            <div class="mode-desc" data-i18n="mode2_desc">결정 사항 · 액션 아이템 · 주요 논의 정리</div>
+                        </div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon amber">🤝</div>
+                        <div>
+                            <div class="mode-name" data-i18n="mode3_name">계약 모드</div>
+                            <div class="mode-desc" data-i18n="mode3_desc">합의 사항 · 주요 조건 · 미합의 사항 분류</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- FEATURE GRID -->
-  <div class="feature-grid" id="features">
-    <div class="feature-card reveal">
-      <span class="feature-icon">🔒</span>
-      <p class="feature-name" data-i18n="f1_name">완전 온디바이스</p>
-      <p class="feature-text" data-i18n="f1_text">STT와 AI 요약 모두 기기 안에서. 데이터가 서버로 나가지 않아 프라이버시가 완벽하게 보호됩니다.</p>
-    </div>
-    <div class="feature-card reveal reveal-delay-1">
-      <span class="feature-icon">⚡</span>
-      <p class="feature-name" data-i18n="f2_name">무제한 녹음</p>
-      <p class="feature-text" data-i18n="f2_text">WhisperKit 기반 10초 청크 실시간 처리로 1분 제한 없이 긴 강의와 회의도 끊김 없이 녹음합니다.</p>
-    </div>
-    <div class="feature-card reveal reveal-delay-2">
-      <span class="feature-icon">🌐</span>
-      <p class="feature-name" data-i18n="f3_name">9개 언어 지원</p>
-      <p class="feature-text" data-i18n="f3_text">한국어, 영어, 일본어, 중국어, 프랑스어 등 9개 언어 STT를 설정에서 즉시 전환할 수 있습니다.</p>
-    </div>
-    <div class="feature-card reveal reveal-delay-1">
-      <span class="feature-icon">🔍</span>
-      <p class="feature-name" data-i18n="f4_name">통합 검색</p>
-      <p class="feature-text" data-i18n="f4_text">제목, 요약 내용, 원본 텍스트를 한 번에 검색. 지난 회의 내용을 빠르게 찾아냅니다.</p>
-    </div>
-    <div class="feature-card reveal reveal-delay-2">
-      <span class="feature-icon">🔊</span>
-      <p class="feature-name" data-i18n="f5_name">요약 읽어주기</p>
-      <p class="feature-text" data-i18n="f5_text">TTS로 요약 결과를 음성으로 청취. 운전 중이나 이동 중에도 내용을 확인할 수 있습니다.</p>
-    </div>
-    <div class="feature-card reveal reveal-delay-3">
-      <span class="feature-icon">📋</span>
-      <p class="feature-name" data-i18n="f6_name">스마트 복사</p>
-      <p class="feature-text" data-i18n="f6_text">마크다운 제거 순수 텍스트 또는 MD 형식 그대로, 용도에 맞게 두 가지 방식으로 복사합니다.</p>
-    </div>
-  </div>
-</section>
+    <section id="features" class="app-section" style="padding-top: 0;">
+        <div class="feature-grid">
+            <div class="feature-card-wrap reveal">
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3 class="feature-name" data-i18n="f1_name">완전 온디바이스</h3>
+                    <p class="feature-text" data-i18n="f1_text">STT와 AI 요약 모두 기기 안에서. 데이터가 서버로 나가지 않아 프라이버시가 완벽하게 보호됩니다.</p>
+                </div>
+            </div>
+            <div class="feature-card-wrap reveal reveal-delay-1">
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="feature-name" data-i18n="f2_name">무제한 녹음</h3>
+                    <p class="feature-text" data-i18n="f2_text">WhisperKit 기반 10초 청크 실시간 처리로 1분 제한 없이 긴 강의와 회의도 끊김 없이 녹음합니다.</p>
+                </div>
+            </div>
+            <div class="feature-card-wrap reveal reveal-delay-2">
+                <div class="feature-card">
+                    <span class="feature-icon">🏝️</span>
+                    <h3 class="feature-name" data-i18n="f3_name">Dynamic Island</h3>
+                    <p class="feature-text" data-i18n="f3_text">녹음 중 Dynamic Island과 잠금화면에 Live Activity가 표시됩니다. 앱 종료 시 2초 내 자동 소멸.</p>
+                </div>
+                <span class="new-badge">NEW</span>
+            </div>
+            <div class="feature-card-wrap reveal">
+                <div class="feature-card">
+                    <span class="feature-icon">💾</span>
+                    <h3 class="feature-name" data-i18n="f4_name">자동저장 & 백그라운드 요약</h3>
+                    <p class="feature-text" data-i18n="f4_text">앱 종료 시 녹음 내용을 즉시 자동저장. 다음 실행 때 AI 요약을 자동으로 완성해 리스트에 표시합니다.</p>
+                </div>
+                <span class="new-badge">NEW</span>
+            </div>
+            <div class="feature-card-wrap reveal reveal-delay-1">
+                <div class="feature-card">
+                    <span class="feature-icon">🌐</span>
+                    <h3 class="feature-name" data-i18n="f5_name">9개 언어 지원</h3>
+                    <p class="feature-text" data-i18n="f5_text">한국어, 영어, 일본어, 중국어, 프랑스어 등 9개 언어 STT를 설정에서 즉시 전환할 수 있습니다.</p>
+                </div>
+            </div>
+            <div class="feature-card-wrap reveal reveal-delay-2">
+                <div class="feature-card">
+                    <span class="feature-icon">🔊</span>
+                    <h3 class="feature-name" data-i18n="f6_name">요약 읽어주기</h3>
+                    <p class="feature-text" data-i18n="f6_text">TTS로 요약 결과를 음성으로 청취. 운전 중이나 이동 중에도 내용을 확인할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- TECH STACK -->
-<section class="tech-section" id="tech">
-  <p class="section-label reveal" data-i18n="sec_label_tech">Technology</p>
-  <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_tech">외부 의존 없이,<br>Apple 생태계만으로.</h2>
+    <section id="tech" class="tech-section">
+        <div class="section-label reveal" data-i18n="sec_label_tech">Technology</div>
+        <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_tech">외부 의존 없이,<br>Apple 생태계만으로.</h2>
+        <div class="tech-strip">
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>SwiftUI</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>WhisperKit (CoreML)</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#8B7FF4;"></span>Apple Foundation Model</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>SwiftData</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>ActivityKit</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#8B7FF4;"></span>AVSpeechSynthesizer</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>Clean Architecture</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>Swift Package Manager</div>
+        </div>
+    </section>
 
-  <div class="tech-strip reveal reveal-delay-2">
-    <div class="tech-pill"><div class="tech-dot" style="background:#6B5FE4"></div>SwiftUI</div>
-    <div class="tech-pill"><div class="tech-dot" style="background:#2DD4BF"></div>WhisperKit (CoreML)</div>
-    <div class="tech-pill"><div class="tech-dot" style="background:#f59e0b"></div>Apple Foundation Model</div>
-    <div class="tech-pill"><div class="tech-dot" style="background:#6B5FE4"></div>SwiftData</div>
-    <div class="tech-pill"><div class="tech-dot" style="background:#2DD4BF"></div>AVSpeechSynthesizer</div>
-    <div class="tech-pill"><div class="tech-dot" style="background:#9b8ff8"></div>Clean Architecture</div>
-    <div class="tech-pill"><div class="tech-dot" style="background:#9b8ff8"></div>Swift Package Manager</div>
-  </div>
-</section>
+    <footer>
+        <div class="footer-logo">우주라이크 <span>UZULIKE</span></div>
+        <div class="footer-copy">© 2026 우주라이크 UZULIKE. All rights reserved.</div>
+    </footer>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">우주라이크 <span>UZULIKE</span></div>
-  <p class="footer-copy">© 2026 우주라이크 UZULIKE. All rights reserved.</p>
-</footer>
+    <script>
+        const i18n = {
+            ko: {
+                nav_app: '앱 소개', nav_features: '기능', nav_tech: '기술 스택',
+                badge: 'Small studio. Big ideas.',
+                hero_sub: 'UZULIKE · Making apps that just work.',
+                hero_desc: '온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.',
+                hero_cta: '앱 살펴보기',
+                sec_label_app: 'Our App',
+                sec_title_app: '회의, 강의, 협상<br>모든 대화를 담다.',
+                sec_desc_app: '음성을 녹음하고 온디바이스 AI가 즉시 요약해줍니다. 네트워크 없이, 프라이버시 완벽 보호.',
+                app_tagline: 'Your AI-powered meeting partner',
+                app_desc: '녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.<br>앱이 종료돼도 녹음이 자동 저장되고, 다음 실행 시 AI 요약까지 자동 완성됩니다.',
+                tag_ondevice: '온디바이스 AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
+                mode1_name: '강의 모드', mode1_desc: '핵심 개념 · 주요 내용 · 핵심 정리 자동 추출',
+                mode2_name: '회의 모드', mode2_desc: '결정 사항 · 액션 아이템 · 주요 논의 정리',
+                mode3_name: '계약 모드', mode3_desc: '합의 사항 · 주요 조건 · 미합의 사항 분류',
+                f1_name: '완전 온디바이스', f1_text: 'STT와 AI 요약 모두 기기 안에서. 데이터가 서버로 나가지 않아 프라이버시가 완벽하게 보호됩니다.',
+                f2_name: '무제한 녹음', f2_text: 'WhisperKit 기반 10초 청크 실시간 처리로 1분 제한 없이 긴 강의와 회의도 끊김 없이 녹음합니다.',
+                f3_name: 'Dynamic Island', f3_text: '녹음 중 Dynamic Island과 잠금화면에 Live Activity가 표시됩니다. 앱 종료 시 2초 내 자동 소멸.',
+                f4_name: '자동저장 & 백그라운드 요약', f4_text: '앱 종료 시 녹음 내용을 즉시 자동저장. 다음 실행 때 AI 요약을 자동으로 완성해 리스트에 표시합니다.',
+                f5_name: '9개 언어 지원', f5_text: '한국어, 영어, 일본어, 중국어, 프랑스어 등 9개 언어 STT를 설정에서 즉시 전환할 수 있습니다.',
+                f6_name: '요약 읽어주기', f6_text: 'TTS로 요약 결과를 음성으로 청취. 운전 중이나 이동 중에도 내용을 확인할 수 있습니다.',
+                sec_label_tech: 'Technology',
+                sec_title_tech: '외부 의존 없이,<br>Apple 생태계만으로.',
+            },
+            en: {
+                nav_app: 'App', nav_features: 'Features', nav_tech: 'Tech Stack',
+                badge: 'Small studio. Big ideas.',
+                hero_sub: 'UZULIKE · Making apps that just work.',
+                hero_desc: 'We build iOS apps that make everyday life smarter using on-device AI and native Apple technologies.',
+                hero_cta: 'Explore the App',
+                sec_label_app: 'Our App',
+                sec_title_app: 'Meetings, Lectures, Deals.<br>Every conversation, captured.',
+                sec_desc_app: 'Record your voice and let on-device AI summarize it instantly. No network needed. Fully private.',
+                app_tagline: 'Your AI-powered meeting partner',
+                app_desc: 'Just record. AI captures context and distills what matters.<br>Three modes tailored for lectures, meetings, and negotiations.<br>Even if the app is force-quit, your recording is saved — and AI summary completes automatically on next launch.',
+                tag_ondevice: 'On-Device AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
+                mode1_name: 'Lecture', mode1_desc: 'Key concepts · Main points · Core summary',
+                mode2_name: 'Meeting', mode2_desc: 'Decisions · Action items · Key discussions',
+                mode3_name: 'Contract', mode3_desc: 'Agreements · Key terms · Unresolved items',
+                f1_name: 'Fully On-Device', f1_text: 'Both STT and AI summarization run entirely on your device. Your data never leaves.',
+                f2_name: 'Unlimited Recording', f2_text: 'WhisperKit processes audio in 10-second chunks in real time — no 1-minute limit.',
+                f3_name: 'Dynamic Island', f3_text: 'Live Activity appears on Dynamic Island and Lock Screen during recording. Auto-expires within 2 seconds of app termination.',
+                f4_name: 'Auto-Save & Background Summary', f4_text: 'Recording is instantly saved even if the app is force-quit. AI summary generates automatically in the background on next launch.',
+                f5_name: '9 Languages', f5_text: 'Switch STT language instantly in settings. Korean, English, Japanese, Chinese, and more.',
+                f6_name: 'Read Aloud', f6_text: 'Listen to your summaries via TTS. Catch up hands-free while on the move.',
+                sec_label_tech: 'Technology',
+                sec_title_tech: 'Zero dependencies.<br>Pure Apple ecosystem.',
+            },
+            ja: {
+                nav_app: 'アプリ紹介', nav_features: '機能', nav_tech: '技術スタック',
+                badge: 'Small studio. Big ideas.',
+                hero_sub: 'UZULIKE · Making apps that just work.',
+                hero_desc: 'オンデバイスAIとネイティブiOS技術で、日常をスマートにするアプリを作っています。',
+                hero_cta: 'アプリを見る',
+                sec_label_app: 'Our App',
+                sec_title_app: '会議、講義、交渉。<br>すべての会話を記録。',
+                sec_desc_app: '音声を録音すると、オンデバイスAIが即座に要約。ネットワーク不要、プライバシー完全保護。',
+                app_tagline: 'Your AI-powered meeting partner',
+                app_desc: '録音するだけ。AIが文脈を把握し、要点だけを整理します。<br>講義・会議・契約の3モードで最適な要約を提供。<br>アプリが強制終了されても録音は自動保存され、次回起動時にAI要約が自動完成します。',
+                tag_ondevice: 'オンデバイスAI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
+                mode1_name: '講義モード', mode1_desc: '主要概念・主な内容・核心まとめを自動抽出',
+                mode2_name: '会議モード', mode2_desc: '決定事項・アクションアイテム・主要議論を整理',
+                mode3_name: '契約モード', mode3_desc: '合意事項・主要条件・未合意事項を分類',
+                f1_name: '完全オンデバイス', f1_text: 'STTもAI要約もすべてデバイス内で処理。データが外に出ません。',
+                f2_name: '無制限録音', f2_text: 'WhisperKitが10秒チャンクでリアルタイム処理。1分制限なし。',
+                f3_name: 'Dynamic Island', f3_text: '録音中はDynamic Islandとロック画面にLive Activityが表示。アプリ終了後2秒以内に自動消滅。',
+                f4_name: '自動保存 & バックグラウンド要約', f4_text: 'アプリが強制終了されても録音を即座に自動保存。次回起動時にAI要約をバックグラウンドで自動完成。',
+                f5_name: '9言語対応', f5_text: '韓国語、英語、日本語、中国語など9言語のSTTを即時切替。',
+                f6_name: '読み上げ機能', f6_text: 'TTSで要約を音声再生。移動中もハンズフリーで確認。',
+                sec_label_tech: 'Technology',
+                sec_title_tech: '外部依存ゼロ。<br>Appleエコシステムのみ。',
+            },
+            zh: {
+                nav_app: '应用介绍', nav_features: '功能', nav_tech: '技术栈',
+                badge: 'Small studio. Big ideas.',
+                hero_sub: 'UZULIKE · Making apps that just work.',
+                hero_desc: '利用设备端AI和原生iOS技术，打造让日常生活更智能的应用程序。',
+                hero_cta: '探索应用',
+                sec_label_app: 'Our App',
+                sec_title_app: '会议、讲座、谈判。<br>每段对话，都被记录。',
+                sec_desc_app: '录制语音，设备端AI立即生成摘要。无需网络，完全私密。',
+                app_tagline: 'Your AI-powered meeting partner',
+                app_desc: '只需录音。AI理解上下文，提炼关键内容。<br>讲座、会议、合同三种模式，精准匹配每种场景。<br>即使强制退出应用，录音也会自动保存，下次启动时AI摘要自动完成。',
+                tag_ondevice: '设备端AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
+                mode1_name: '讲座模式', mode1_desc: '关键概念·主要内容·核心整理自动提取',
+                mode2_name: '会议模式', mode2_desc: '决策事项·行动项·主要讨论整理',
+                mode3_name: '合同模式', mode3_desc: '达成事项·主要条款·未决事项分类',
+                f1_name: '完全本地处理', f1_text: 'STT与AI摘要全在设备内完成，数据不会离开您的手机。',
+                f2_name: '无限录音', f2_text: 'WhisperKit以10秒分块实时处理，无1分钟限制。',
+                f3_name: 'Dynamic Island', f3_text: '录音期间Dynamic Island和锁屏上显示Live Activity。应用终止后2秒内自动消失。',
+                f4_name: '自动保存 & 后台摘要', f4_text: '即使强制退出应用，录音也会立即自动保存。下次启动时在后台自动完成AI摘要。',
+                f5_name: '支持9种语言', f5_text: '韩语、英语、日语、中国语等9种语言，随时切换。',
+                f6_name: '朗读功能', f6_text: '通过TTS语音播放摘要，移动途中也能轻松获取内容。',
+                sec_label_tech: 'Technology',
+                sec_title_tech: '零外部依赖。<br>纯Apple生态系统。',
+            }
+        };
 
-<script>
-  const i18n = {
-    ko: {
-      nav_app: '앱 소개', nav_features: '기능', nav_tech: '기술 스택',
-      badge: 'Small studio. Big ideas.',
-      hero_sub: 'UZULIKE · Making apps that just work.',
-      hero_desc: '온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.',
-      hero_cta: '앱 살펴보기',
-      sec_label_app: 'Our App',
-      sec_title_app: '회의, 강의, 협상<br>모든 대화를 담다.',
-      sec_desc_app: '음성을 녹음하고 온디바이스 AI가 즉시 요약해줍니다. 네트워크 없이, 프라이버시 완벽 보호.',
-      app_tagline: 'Your AI-powered meeting partner',
-      app_desc: '녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.',
-      mode1_name: '강의 모드', mode1_desc: '핵심 개념 · 주요 내용 · 핵심 정리 자동 추출',
-      mode2_name: '회의 모드', mode2_desc: '결정 사항 · 액션 아이템 · 주요 논의 정리',
-      mode3_name: '계약 모드', mode3_desc: '합의 사항 · 주요 조건 · 미합의 사항 분류',
-      f1_name: '완전 온디바이스', f1_text: 'STT와 AI 요약 모두 기기 안에서. 데이터가 서버로 나가지 않아 프라이버시가 완벽하게 보호됩니다.',
-      f2_name: '무제한 녹음', f2_text: 'WhisperKit 기반 10초 청크 실시간 처리로 1분 제한 없이 긴 강의와 회의도 끊김 없이 녹음합니다.',
-      f3_name: '9개 언어 지원', f3_text: '한국어, 영어, 일본어, 중국어, 프랑스어 등 9개 언어 STT를 설정에서 즉시 전환할 수 있습니다.',
-      f4_name: '통합 검색', f4_text: '제목, 요약 내용, 원본 텍스트를 한 번에 검색. 지난 회의 내용을 빠르게 찾아냅니다.',
-      f5_name: '요약 읽어주기', f5_text: 'TTS로 요약 결과를 음성으로 청취. 운전 중이나 이동 중에도 내용을 확인할 수 있습니다.',
-      f6_name: '스마트 복사', f6_text: '마크다운 제거 순수 텍스트 또는 MD 형식 그대로, 용도에 맞게 두 가지 방식으로 복사합니다.',
-      sec_label_tech: 'Technology',
-      sec_title_tech: '외부 의존 없이,<br>Apple 생태계만으로.',
-    },
-    en: {
-      nav_app: 'App', nav_features: 'Features', nav_tech: 'Tech Stack',
-      badge: 'Small studio. Big ideas.',
-      hero_sub: 'UZULIKE · Making apps that just work.',
-      hero_desc: 'We build iOS apps that make everyday life smarter using on-device AI and native Apple technologies.',
-      hero_cta: 'Explore the App',
-      sec_label_app: 'Our App',
-      sec_title_app: 'Meetings, Lectures, Deals.<br>Every conversation, captured.',
-      sec_desc_app: 'Record your voice and let on-device AI summarize it instantly. No network needed. Fully private.',
-      app_tagline: 'Your AI-powered meeting partner',
-      app_desc: 'Just record. AI captures context and distills what matters.<br>Three modes tailored for lectures, meetings, and negotiations.',
-      mode1_name: 'Lecture', mode1_desc: 'Key concepts · Main points · Core summary',
-      mode2_name: 'Meeting', mode2_desc: 'Decisions · Action items · Key discussions',
-      mode3_name: 'Contract', mode3_desc: 'Agreements · Key terms · Unresolved items',
-      f1_name: 'Fully On-Device', f1_text: 'Both STT and AI summarization run entirely on your device. Your data never leaves.',
-      f2_name: 'Unlimited Recording', f2_text: 'WhisperKit processes audio in 10-second chunks in real time — no 1-minute limit.',
-      f3_name: '9 Languages', f3_text: 'Switch STT language instantly in settings. Korean, English, Japanese, Chinese, and more.',
-      f4_name: 'Unified Search', f4_text: 'Search across titles, summaries, and raw transcripts at once.',
-      f5_name: 'Read Aloud', f5_text: 'Listen to your summaries via TTS. Catch up hands-free while on the move.',
-      f6_name: 'Smart Copy', f6_text: 'Copy as plain text or keep Markdown formatting — your choice.',
-      sec_label_tech: 'Technology',
-      sec_title_tech: 'Zero dependencies.<br>Pure Apple ecosystem.',
-    },
-    ja: {
-      nav_app: 'アプリ紹介', nav_features: '機能', nav_tech: '技術スタック',
-      badge: 'Small studio. Big ideas.',
-      hero_sub: 'UZULIKE · Making apps that just work.',
-      hero_desc: 'オンデバイスAIとネイティブiOS技術で、日常をスマートにするアプリを作っています。',
-      hero_cta: 'アプリを見る',
-      sec_label_app: 'Our App',
-      sec_title_app: '会議、講義、交渉。<br>すべての会話を記録。',
-      sec_desc_app: '音声を録音すると、オンデバイスAIが即座に要約。ネットワーク不要、プライバシー完全保護。',
-      app_tagline: 'Your AI-powered meeting partner',
-      app_desc: '録音するだけ。AIが文脈を把握し、要点だけを整理します。<br>講義・会議・契約の3モードで最適な要約を提供。',
-      mode1_name: '講義モード', mode1_desc: '主要概念・主な内容・核心まとめを自動抽出',
-      mode2_name: '会議モード', mode2_desc: '決定事項・アクションアイテム・主要議論を整理',
-      mode3_name: '契約モード', mode3_desc: '合意事項・主要条件・未合意事項を分類',
-      f1_name: '完全オンデバイス', f1_text: 'STTもAI要約もすべてデバイス内で処理。データが外に出ません。',
-      f2_name: '無制限録音', f2_text: 'WhisperKitが10秒チャンクでリアルタイム処理。1分制限なし。',
-      f3_name: '9言語対応', f3_text: '韓国語、英語、日本語、中国語など9言語のSTTを即時切替。',
-      f4_name: '統合検索', f4_text: 'タイトル・要約・原文テキストを一括検索。',
-      f5_name: '読み上げ機能', f5_text: 'TTSで要約を音声再生。移動中もハンズフリーで確認。',
-      f6_name: 'スマートコピー', f6_text: 'プレーンテキストまたはMarkdown形式でコピー。',
-      sec_label_tech: 'Technology',
-      sec_title_tech: '外部依存ゼロ。<br>Appleエコシステムのみ。',
-    },
-    zh: {
-      nav_app: '应用介绍', nav_features: '功能', nav_tech: '技术栈',
-      badge: 'Small studio. Big ideas.',
-      hero_sub: 'UZULIKE · Making apps that just work.',
-      hero_desc: '利用设备端AI和原生iOS技术，打造让日常生活更智能的应用程序。',
-      hero_cta: '探索应用',
-      sec_label_app: 'Our App',
-      sec_title_app: '会议、讲座、谈判。<br>每段对话，都被记录。',
-      sec_desc_app: '录制语音，设备端AI立即生成摘要。无需网络，完全私密。',
-      app_tagline: 'Your AI-powered meeting partner',
-      app_desc: '只需录音。AI理解上下文，提炼关键内容。<br>讲座、会议、合同三种模式，精准匹配每种场景。',
-      mode1_name: '讲座模式', mode1_desc: '关键概念·主要内容·核心整理自动提取',
-      mode2_name: '会议模式', mode2_desc: '决策事项·行动项·主要讨论整理',
-      mode3_name: '合同模式', mode3_desc: '达成事项·主要条款·未决事项分类',
-      f1_name: '完全本地处理', f1_text: 'STT与AI摘要全在设备内完成，数据不会离开您的手机。',
-      f2_name: '无限录音', f2_text: 'WhisperKit以10秒分块实时处理，无1分钟限制。',
-      f3_name: '支持9种语言', f3_text: '韩语、英语、日语、中文等9种语言，随时切换。',
-      f4_name: '统一搜索', f4_text: '同时搜索标题、摘要和原始文字记录。',
-      f5_name: '朗读功能', f5_text: '通过TTS语音播放摘要，移动途中也能轻松获取内容。',
-      f6_name: '智能复制', f6_text: '可选择纯文本或保留Markdown格式进行复制。',
-      sec_label_tech: 'Technology',
-      sec_title_tech: '零外部依赖。<br>纯Apple生态系统。',
-    }
-  };
+        const langFlags = { ko: '🇰🇷 KO', en: '🇺🇸 EN', ja: '🇯🇵 JA', zh: '🇨🇳 ZH' };
+        let currentLang = 'ko';
 
-  const langFlags = { ko: '🇰🇷 KO', en: '🇺🇸 EN', ja: '🇯🇵 JA', zh: '🇨🇳 ZH' };
-  let currentLang = 'ko';
+        function applyLang(lang) {
+            const t = i18n[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (t[key] !== undefined) el.innerHTML = t[key];
+            });
+            document.getElementById('langBtn').innerHTML = langFlags[lang] + ' <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+            document.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === lang));
+            currentLang = lang;
+        }
 
-  const elMap = {
-    nav_app:       '[data-i18n="nav_app"]',
-    nav_features:  '[data-i18n="nav_features"]',
-    nav_tech:      '[data-i18n="nav_tech"]',
-    badge:         '[data-i18n="badge"]',
-    hero_sub:      '[data-i18n="hero_sub"]',
-    hero_desc:     '[data-i18n="hero_desc"]',
-    hero_cta:      '[data-i18n="hero_cta"]',
-    sec_label_app: '[data-i18n="sec_label_app"]',
-    sec_title_app: '[data-i18n="sec_title_app"]',
-    sec_desc_app:  '[data-i18n="sec_desc_app"]',
-    app_tagline:   '[data-i18n="app_tagline"]',
-    app_desc:      '[data-i18n="app_desc"]',
-    mode1_name:    '[data-i18n="mode1_name"]',
-    mode1_desc:    '[data-i18n="mode1_desc"]',
-    mode2_name:    '[data-i18n="mode2_name"]',
-    mode2_desc:    '[data-i18n="mode2_desc"]',
-    mode3_name:    '[data-i18n="mode3_name"]',
-    mode3_desc:    '[data-i18n="mode3_desc"]',
-    f1_name: '[data-i18n="f1_name"]', f1_text: '[data-i18n="f1_text"]',
-    f2_name: '[data-i18n="f2_name"]', f2_text: '[data-i18n="f2_text"]',
-    f3_name: '[data-i18n="f3_name"]', f3_text: '[data-i18n="f3_text"]',
-    f4_name: '[data-i18n="f4_name"]', f4_text: '[data-i18n="f4_text"]',
-    f5_name: '[data-i18n="f5_name"]', f5_text: '[data-i18n="f5_text"]',
-    f6_name: '[data-i18n="f6_name"]', f6_text: '[data-i18n="f6_text"]',
-    sec_label_tech: '[data-i18n="sec_label_tech"]',
-    sec_title_tech: '[data-i18n="sec_title_tech"]',
-  };
+        const btn = document.getElementById('langBtn');
+        const dropdown = document.getElementById('langDropdown');
 
-  function applyLang(lang) {
-    const t = i18n[lang];
-    Object.keys(elMap).forEach(key => {
-      const el = document.querySelector(elMap[key]);
-      if (el && t[key] !== undefined) el.innerHTML = t[key];
-    });
-    document.getElementById('langBtn').innerHTML =
-      langFlags[lang] + ' <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
-    document.querySelectorAll('.lang-option').forEach(o => {
-      o.classList.toggle('active', o.dataset.lang === lang);
-    });
-    currentLang = lang;
-  }
+        btn.addEventListener('click', e => { e.stopPropagation(); btn.classList.toggle('open'); dropdown.classList.toggle('open'); });
+        document.addEventListener('click', () => { btn.classList.remove('open'); dropdown.classList.remove('open'); });
+        document.querySelectorAll('.lang-option').forEach(opt => {
+            opt.addEventListener('click', () => { applyLang(opt.dataset.lang); btn.classList.remove('open'); dropdown.classList.remove('open'); });
+        });
 
-  const btn = document.getElementById('langBtn');
-  const dropdown = document.getElementById('langDropdown');
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    btn.classList.toggle('open');
-    dropdown.classList.toggle('open');
-  });
-  document.addEventListener('click', () => {
-    btn.classList.remove('open');
-    dropdown.classList.remove('open');
-  });
-  document.querySelectorAll('.lang-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      applyLang(opt.dataset.lang);
-      btn.classList.remove('open');
-      dropdown.classList.remove('open');
-    });
-  });
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
