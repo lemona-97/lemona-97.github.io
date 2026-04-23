@@ -140,7 +140,13 @@
         .app-hero-card {
             background: var(--surface); border: 0.5px solid var(--border2); border-radius: 24px;
             padding: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
-            margin-bottom: 32px; position: relative; overflow: hidden; transition: border-color 0.3s;
+            margin-bottom: 48px; position: relative; overflow: hidden; transition: border-color 0.3s;
+        }
+        .app-hero-card:nth-child(2) {
+            grid-template-columns: 1fr 1fr;
+        }
+        .app-hero-card:nth-child(2) .app-visual {
+            order: -1;
         }
         .app-hero-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
@@ -173,6 +179,19 @@
         .mode-icon.amber { background: rgba(251,191,36,0.12); }
         .mode-name { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500; margin-bottom: 2px; }
         .mode-desc { font-size: 12px; color: var(--text3); }
+
+        .counselor-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .counselor-mini {
+            background: var(--bg3); border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
+            padding: 12px; text-align: center; font-size: 13px; color: var(--text2);
+            font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+            transition: all 0.2s;
+        }
+        .counselor-mini:hover { background: var(--surface2); border-color: rgba(245,163,184,0.4); transform: translateY(-2px); }
 
         /* 3열 그리드 */
         .feature-grid {
@@ -264,6 +283,7 @@
 
         @media (max-width: 900px) {
             .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .counselor-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (max-width: 768px) {
@@ -272,7 +292,9 @@
             .hero { padding: 100px 24px 80px; }
             .app-section, .tech-section { padding: 80px 24px; }
             .app-hero-card { grid-template-columns: 1fr; padding: 32px 24px; }
+            .app-hero-card:nth-child(2) .app-visual { order: 0; }
             .feature-grid { grid-template-columns: 1fr; }
+            .counselor-grid { grid-template-columns: repeat(2, 1fr); }
             footer { flex-direction: column; gap: 16px; text-align: center; padding: 40px 24px; }
         }
     </style>
@@ -316,9 +338,9 @@
     </section>
 
     <section id="app" class="app-section">
-        <div class="section-label reveal" data-i18n="sec_label_app">Our App</div>
-        <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_app">회의, 강의, 협상<br>모든 대화를 담다.</h2>
-        <p class="section-desc reveal reveal-delay-2" data-i18n="sec_desc_app">음성을 녹음하고 온디바이스 AI가 즉시 요약해줍니다. 네트워크 없이, 프라이버시 완벽 보호.</p>
+        <div class="section-label reveal" data-i18n="sec_label_app">Our Apps</div>
+        <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_app">Apple 생태계를 위한<br>두 가지 서비스</h2>
+        <p class="section-desc reveal reveal-delay-2" data-i18n="sec_desc_app">온디바이스 AI로 일상을 더 똑똑하고 따뜻하게 만듭니다.</p>
 
         <div class="app-hero-card reveal reveal-delay-3">
             <div>
@@ -371,6 +393,55 @@
                             <div class="mode-desc" data-i18n="mode3_desc">합의 사항 · 주요 조건 · 미합의 사항 분류</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-hero-card reveal reveal-delay-3">
+            <div class="app-visual">
+                <div class="counselor-grid">
+                    <div class="counselor-mini">🔭 지안</div>
+                    <div class="counselor-mini">🧩 도윤</div>
+                    <div class="counselor-mini">♟️ 하린</div>
+                    <div class="counselor-mini">💡 시우</div>
+                    <div class="counselor-mini">🌙 해원</div>
+                    <div class="counselor-mini">🌷 윤슬</div>
+                    <div class="counselor-mini">🌻 라온</div>
+                    <div class="counselor-mini">🎈 반디</div>
+                    <div class="counselor-mini">📚 정우</div>
+                    <div class="counselor-mini">🍀 다정</div>
+                    <div class="counselor-mini">🗂️ 태오</div>
+                    <div class="counselor-mini">🍰 소리</div>
+                    <div class="counselor-mini">🛠️ 겨울</div>
+                    <div class="counselor-mini">🎨 하나</div>
+                    <div class="counselor-mini">🔥 라이</div>
+                    <div class="counselor-mini">🎉 봄이</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="app-icon">
+                    <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="72" height="72" rx="18" fill="url(#grad2)"/>
+                        <defs>
+                            <linearGradient id="grad2" x1="0" y1="0" x2="72" y2="72">
+                                <stop offset="0%" stop-color="#F5A3B8"/>
+                                <stop offset="100%" stop-color="#B8A3F5"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="36" cy="26" r="8" fill="white" opacity="0.9"/>
+                        <path d="M24 42c0-6.627 5.373-12 12-12s12 5.373 12 12v4H24v-4Z" fill="white" opacity="0.9"/>
+                        <path d="M20 52h32v6a2 2 0 01-2 2H22a2 2 0 01-2-2v-6Z" fill="white" opacity="0.7"/>
+                    </svg>
+                </div>
+                <h3 class="app-name" data-i18n="mbti_app_name">Secret MBTI</h3>
+                <p class="app-tagline" data-i18n="mbti_tagline">16가지 성격, 16명의 상담사</p>
+                <p class="app-description" data-i18n="mbti_desc">당신의 MBTI에 맞춘 AI 상담사와 대화하세요.<br>각 성격 유형별 고유한 말투, 상담 스타일, 음성으로 더 따뜻하고 깊이 있는 대화를 나눌 수 있습니다.<br>완전한 프라이버시 보호로 편안하게 마음을 나누세요.</p>
+                <div class="app-tags">
+                    <span class="tag accent" data-i18n="tag_16mbti">16 MBTI 상담사</span>
+                    <span class="tag teal" data-i18n="tag_tts">한국어 TTS</span>
+                    <span class="tag accent" data-i18n="tag_ondevice2">온디바이스 AI</span>
+                    <span class="tag teal" data-i18n="tag_voice">음성 입력</span>
                 </div>
             </div>
         </div>
@@ -453,9 +524,13 @@
                 hero_sub: 'UZULIKE · Making apps that just work.',
                 hero_desc: '온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.',
                 hero_cta: '앱 살펴보기',
-                sec_label_app: 'Our App',
-                sec_title_app: '회의, 강의, 협상<br>모든 대화를 담다.',
-                sec_desc_app: '음성을 녹음하고 온디바이스 AI가 즉시 요약해줍니다. 네트워크 없이, 프라이버시 완벽 보호.',
+                sec_label_app: 'Our Apps',
+                sec_title_app: 'Apple 생태계를 위한<br>두 가지 서비스',
+                sec_desc_app: '온디바이스 AI로 일상을 더 똑똑하고 따뜻하게 만듭니다.',
+                mbti_app_name: 'Secret MBTI',
+                mbti_tagline: '16가지 성격, 16명의 상담사',
+                mbti_desc: '당신의 MBTI에 맞춘 AI 상담사와 대화하세요.<br>각 성격 유형별 고유한 말투, 상담 스타일, 음성으로 더 따뜻하고 깊이 있는 대화를 나눌 수 있습니다.<br>완전한 프라이버시 보호로 편안하게 마음을 나누세요.',
+                tag_16mbti: '16 MBTI 상담사', tag_tts: '한국어 TTS', tag_ondevice2: '온디바이스 AI', tag_voice: '음성 입력',
                 app_tagline: 'Your AI-powered meeting partner',
                 app_desc: '녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.<br>앱이 종료돼도 녹음이 자동 저장되고, 다음 실행 시 AI 요약까지 자동 완성됩니다.',
                 tag_ondevice: '온디바이스 AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
@@ -477,9 +552,13 @@
                 hero_sub: 'UZULIKE · Making apps that just work.',
                 hero_desc: 'We build iOS apps that make everyday life smarter using on-device AI and native Apple technologies.',
                 hero_cta: 'Explore the App',
-                sec_label_app: 'Our App',
-                sec_title_app: 'Meetings, Lectures, Deals.<br>Every conversation, captured.',
-                sec_desc_app: 'Record your voice and let on-device AI summarize it instantly. No network needed. Fully private.',
+                sec_label_app: 'Our Apps',
+                sec_title_app: 'Two Services for the<br>Apple Ecosystem',
+                sec_desc_app: 'Making everyday life smarter and warmer with on-device AI.',
+                mbti_app_name: 'Secret MBTI',
+                mbti_tagline: '16 Personalities, 16 Counselors',
+                mbti_desc: 'Talk with an AI counselor tailored to your MBTI type.<br>Each personality has its own unique speech style, counseling approach, and voice for deeper, warmer conversations.<br>Complete privacy protection for comfortable sharing.',
+                tag_16mbti: '16 MBTI Counselors', tag_tts: 'Korean TTS', tag_ondevice2: 'On-Device AI', tag_voice: 'Voice Input',
                 app_tagline: 'Your AI-powered meeting partner',
                 app_desc: 'Just record. AI captures context and distills what matters.<br>Three modes tailored for lectures, meetings, and negotiations.<br>Even if the app is force-quit, your recording is saved — and AI summary completes automatically on next launch.',
                 tag_ondevice: 'On-Device AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
@@ -501,9 +580,13 @@
                 hero_sub: 'UZULIKE · Making apps that just work.',
                 hero_desc: 'オンデバイスAIとネイティブiOS技術で、日常をスマートにするアプリを作っています。',
                 hero_cta: 'アプリを見る',
-                sec_label_app: 'Our App',
-                sec_title_app: '会議、講義、交渉。<br>すべての会話を記録。',
-                sec_desc_app: '音声を録音すると、オンデバイスAIが即座に要約。ネットワーク不要、プライバシー完全保護。',
+                sec_label_app: 'Our Apps',
+                sec_title_app: 'Appleエコシステムのための<br>2つのサービス',
+                sec_desc_app: 'オンデバイスAIで日常をより賢く、温かくします。',
+                mbti_app_name: 'Secret MBTI',
+                mbti_tagline: '16の性格、16人のカウンセラー',
+                mbti_desc: 'あなたのMBTIに合わせたAIカウンセラーと会話してください。<br>各性格タイプごとに独自の話し方、カウンセリングスタイル、音声を持つより深く温かい会話ができます。<br>完全なプライバシー保護で安心して心を共有できます。',
+                tag_16mbti: '16MBTIカウンセラー', tag_tts: '日本語TTS', tag_ondevice2: 'オンデバイスAI', tag_voice: '音声入力',
                 app_tagline: 'Your AI-powered meeting partner',
                 app_desc: '録音するだけ。AIが文脈を把握し、要点だけを整理します。<br>講義・会議・契約の3モードで最適な要約を提供。<br>アプリが強制終了されても録音は自動保存され、次回起動時にAI要約が自動完成します。',
                 tag_ondevice: 'オンデバイスAI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
@@ -525,9 +608,13 @@
                 hero_sub: 'UZULIKE · Making apps that just work.',
                 hero_desc: '利用设备端AI和原生iOS技术，打造让日常生活更智能的应用程序。',
                 hero_cta: '探索应用',
-                sec_label_app: 'Our App',
-                sec_title_app: '会议、讲座、谈判。<br>每段对话，都被记录。',
-                sec_desc_app: '录制语音，设备端AI立即生成摘要。无需网络，完全私密。',
+                sec_label_app: 'Our Apps',
+                sec_title_app: 'Apple生态系统的<br>两个服务',
+                sec_desc_app: '通过设备端AI让日常生活更聪慧、更温暖。',
+                mbti_app_name: 'Secret MBTI',
+                mbti_tagline: '16种性格，16位心理咨询师',
+                mbti_desc: '与根据您的MBTI类型定制的AI咨询师交谈。<br>每种性格都拥有独特的讲话方式、咨询风格和语音，可以进行更深层、更温暖的对话。<br>完全的隐私保护，安心分享内心。',
+                tag_16mbti: '16个MBTI咨询师', tag_tts: '中文TTS', tag_ondevice2: '设备端AI', tag_voice: '语音输入',
                 app_tagline: 'Your AI-powered meeting partner',
                 app_desc: '只需录音。AI理解上下文，提炼关键内容。<br>讲座、会议、合同三种模式，精准匹配每种场景。<br>即使强制退出应用，录音也会自动保存，下次启动时AI摘要自动完成。',
                 tag_ondevice: '设备端AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
