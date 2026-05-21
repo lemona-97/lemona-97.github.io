@@ -142,12 +142,6 @@
             padding: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
             margin-bottom: 48px; position: relative; overflow: hidden; transition: border-color 0.3s;
         }
-        .app-hero-card:nth-child(2) {
-            grid-template-columns: 1fr 1fr;
-        }
-        .app-hero-card:nth-child(2) .app-visual {
-            order: -1;
-        }
         .app-hero-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent2), transparent); opacity: 0.5;
@@ -166,20 +160,6 @@
         .tag.accent { background: rgba(107,95,228,0.12); border-color: rgba(107,95,228,0.3); color: var(--accent2); }
         .tag.teal { background: rgba(45,212,191,0.1); border-color: rgba(45,212,191,0.25); color: var(--teal); }
 
-        .mode-cards { display: flex; flex-direction: column; gap: 12px; }
-        .mode-card {
-            background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius-sm);
-            padding: 16px 20px; display: flex; align-items: center; gap: 16px;
-            transition: all 0.25s; cursor: default;
-        }
-        .mode-card:hover { background: var(--surface2); border-color: var(--border2); transform: translateX(4px); }
-        .mode-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-        .mode-icon.purple { background: rgba(107,95,228,0.15); }
-        .mode-icon.teal { background: rgba(45,212,191,0.12); }
-        .mode-icon.amber { background: rgba(251,191,36,0.12); }
-        .mode-name { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500; margin-bottom: 2px; }
-        .mode-desc { font-size: 12px; color: var(--text3); }
-
         .counselor-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -192,44 +172,6 @@
             transition: all 0.2s;
         }
         .counselor-mini:hover { background: var(--surface2); border-color: rgba(245,163,184,0.4); transform: translateY(-2px); }
-
-        /* 3열 그리드 */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-
-        /* 하단 NEW 배지용 래퍼 */
-        .feature-card-wrap { position: relative; }
-        .new-badge {
-            position: absolute;
-            top: 12px; right: 12px;
-            font-size: 10px; font-weight: 700; letter-spacing: 1px;
-            padding: 3px 8px;
-            background: linear-gradient(135deg, var(--accent), var(--teal));
-            color: #fff;
-            border-radius: 999px;
-            font-family: 'Space Grotesk', sans-serif;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .feature-card {
-            background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius);
-            padding: 28px; transition: all 0.25s; position: relative; overflow: hidden; height: 100%;
-        }
-        .feature-card::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, var(--accent-glow), transparent);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .feature-card:hover { border-color: var(--border2); transform: translateY(-4px); }
-        .feature-card:hover::after { opacity: 1; }
-
-        .feature-icon { font-size: 24px; margin-bottom: 16px; display: block; }
-        .feature-name { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 500; margin-bottom: 8px; position: relative; z-index: 1; }
-        .feature-text { font-size: 13px; color: var(--text3); line-height: 1.7; position: relative; z-index: 1; }
 
         .tech-section { padding: 80px 40px 120px; max-width: 1100px; margin: 0 auto; }
         .tech-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
@@ -275,16 +217,78 @@
         .lang-option:hover { background: var(--surface2); color: var(--text); }
         .lang-option.active { color: var(--accent2); }
 
+        /* Coming Soon 배지 */
+        .coming-soon-badge {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 11px; font-weight: 700; letter-spacing: 1px;
+            padding: 4px 12px;
+            background: rgba(45,212,191,0.1);
+            border: 0.5px solid rgba(45,212,191,0.35);
+            color: var(--teal);
+            border-radius: 999px;
+            font-family: 'Space Grotesk', sans-serif;
+            z-index: 2;
+        }
+
+        /* 오버레이 데모 비주얼 */
+        .overlay-demo { display: flex; flex-direction: column; gap: 12px; }
+
+        .demo-region {
+            background: rgba(50,50,60,0.7);
+            border: 1px solid rgba(255,235,153,0.5);
+            border-radius: 10px;
+            padding: 18px 20px;
+            position: relative;
+        }
+        .demo-region-label {
+            position: absolute; top: -9px; left: 14px;
+            font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+            color: rgba(255,235,153,0.7); background: var(--surface);
+            padding: 0 8px; font-family: 'Space Grotesk', sans-serif;
+        }
+        .demo-original {
+            font-size: 12px; color: rgba(255,255,255,0.3);
+            font-style: italic; margin-bottom: 10px; line-height: 1.5;
+        }
+        .demo-divider { height: 0.5px; background: rgba(255,255,255,0.12); margin-bottom: 10px; }
+        .demo-translated { font-size: 13px; color: #f0f0f8; line-height: 1.6; }
+
+        .demo-bottom {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .demo-lang-pair {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 7px 16px;
+            background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 999px;
+            font-size: 13px; color: var(--text2); font-family: 'Space Grotesk', sans-serif;
+        }
+        .demo-arrow { color: var(--accent2); font-style: normal; }
+        .demo-hotkey {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 11px; color: var(--text3); font-family: 'Space Grotesk', sans-serif;
+        }
+        .kbd {
+            padding: 2px 7px; background: var(--surface2);
+            border: 0.5px solid var(--border2); border-radius: 5px;
+            font-size: 11px; color: var(--text2); font-family: 'Space Grotesk', sans-serif;
+        }
+        .demo-langs-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+        }
+        .demo-lang-chip {
+            background: var(--bg3); border: 0.5px solid var(--border); border-radius: 6px;
+            padding: 6px 4px; text-align: center;
+            font-size: 11px; color: var(--text3); font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.2s;
+        }
+        .demo-lang-chip:hover { border-color: var(--border2); color: var(--text2); }
+
         .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
         .reveal-delay-1 { transition-delay: 0.1s; }
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
-
-        @media (max-width: 900px) {
-            .feature-grid { grid-template-columns: repeat(2, 1fr); }
-            .counselor-grid { grid-template-columns: repeat(3, 1fr); }
-        }
 
         @media (max-width: 768px) {
             nav { padding: 16px 20px; }
@@ -292,8 +296,7 @@
             .hero { padding: 100px 24px 80px; }
             .app-section, .tech-section { padding: 80px 24px; }
             .app-hero-card { grid-template-columns: 1fr; padding: 32px 24px; }
-            .app-hero-card:nth-child(2) .app-visual { order: 0; }
-            .feature-grid { grid-template-columns: 1fr; }
+            .app-hero-card .app-visual-left { order: 0; }
             .counselor-grid { grid-template-columns: repeat(2, 1fr); }
             footer { flex-direction: column; gap: 16px; text-align: center; padding: 40px 24px; }
         }
@@ -307,7 +310,6 @@
         <a href="#" class="nav-logo">우주라이크 <span>UZULIKE</span></a>
         <ul class="nav-links">
             <li><a href="#app" data-i18n="nav_app">앱 소개</a></li>
-            <li><a href="#features" data-i18n="nav_features">기능</a></li>
             <li><a href="#tech" data-i18n="nav_tech">기술 스택</a></li>
         </ul>
         <div class="lang-switcher">
@@ -329,7 +331,7 @@
             </div>
             <h1 class="hero-company">우주라이크</h1>
             <p class="hero-sub" data-i18n="hero_sub">UZULIKE · Making apps that just work.</p>
-            <p class="hero-desc" data-i18n="hero_desc">온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.</p>
+            <p class="hero-desc" data-i18n="hero_desc">온디바이스 AI와 네이티브 Apple 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.</p>
             <a href="#app" class="hero-cta" data-i18n="hero_cta">앱 살펴보기</a>
             <div class="scroll-hint">
                 <div class="scroll-line"></div>
@@ -342,63 +344,9 @@
         <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_app">Apple 생태계를 위한<br>두 가지 서비스</h2>
         <p class="section-desc reveal reveal-delay-2" data-i18n="sec_desc_app">온디바이스 AI로 일상을 더 똑똑하고 따뜻하게 만듭니다.</p>
 
+        <!-- Secret MBTI -->
         <div class="app-hero-card reveal reveal-delay-3">
-            <div>
-                <div class="app-icon">
-                    <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="72" height="72" rx="18" fill="url(#grad)"/>
-                        <defs>
-                            <linearGradient id="grad" x1="0" y1="0" x2="72" y2="72">
-                                <stop offset="0%" stop-color="#6B5FE4"/>
-                                <stop offset="100%" stop-color="#2DD4BF"/>
-                            </linearGradient>
-                        </defs>
-                        <rect x="28" y="18" width="16" height="24" rx="8" fill="white" opacity="0.9"/>
-                        <path d="M20 36c0 8.837 7.163 16 16 16s16-7.163 16-16" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                        <line x1="36" y1="52" x2="36" y2="58" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                        <line x1="28" y1="58" x2="44" y2="58" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <h3 class="app-name">MeetAgent</h3>
-                <p class="app-tagline" data-i18n="app_tagline">Your AI-powered meeting partner</p>
-                <p class="app-description" data-i18n="app_desc">녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.<br>앱이 종료돼도 녹음이 자동 저장되고, 다음 실행 시 AI 요약까지 자동 완성됩니다.</p>
-                <div class="app-tags">
-                    <span class="tag accent" data-i18n="tag_ondevice">온디바이스 AI</span>
-                    <span class="tag teal" data-i18n="tag_native">iOS Native</span>
-                    <span class="tag accent" data-i18n="tag_swiftui">SwiftUI</span>
-                    <span class="tag teal" data-i18n="tag_dynamicisland">Dynamic Island</span>
-                </div>
-            </div>
-
-            <div class="app-visual">
-                <div class="mode-cards">
-                    <div class="mode-card">
-                        <div class="mode-icon purple">📖</div>
-                        <div>
-                            <div class="mode-name" data-i18n="mode1_name">강의 모드</div>
-                            <div class="mode-desc" data-i18n="mode1_desc">핵심 개념 · 주요 내용 · 핵심 정리 자동 추출</div>
-                        </div>
-                    </div>
-                    <div class="mode-card">
-                        <div class="mode-icon teal">👥</div>
-                        <div>
-                            <div class="mode-name" data-i18n="mode2_name">회의 모드</div>
-                            <div class="mode-desc" data-i18n="mode2_desc">결정 사항 · 액션 아이템 · 주요 논의 정리</div>
-                        </div>
-                    </div>
-                    <div class="mode-card">
-                        <div class="mode-icon amber">🤝</div>
-                        <div>
-                            <div class="mode-name" data-i18n="mode3_name">계약 모드</div>
-                            <div class="mode-desc" data-i18n="mode3_desc">합의 사항 · 주요 조건 · 미합의 사항 분류</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="app-hero-card reveal reveal-delay-3">
-            <div class="app-visual">
+            <div class="app-visual app-visual-left">
                 <div class="counselor-grid">
                     <div class="counselor-mini">🔭 지안</div>
                     <div class="counselor-mini">🧩 도윤</div>
@@ -418,7 +366,6 @@
                     <div class="counselor-mini">🎉 봄이</div>
                 </div>
             </div>
-
             <div>
                 <div class="app-icon">
                     <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -445,52 +392,68 @@
                 </div>
             </div>
         </div>
-    </section>
 
-    <section id="features" class="app-section" style="padding-top: 0;">
-        <div class="feature-grid">
-            <div class="feature-card-wrap reveal">
-                <div class="feature-card">
-                    <span class="feature-icon">🔒</span>
-                    <h3 class="feature-name" data-i18n="f1_name">완전 온디바이스</h3>
-                    <p class="feature-text" data-i18n="f1_text">STT와 AI 요약 모두 기기 안에서. 데이터가 서버로 나가지 않아 프라이버시가 완벽하게 보호됩니다.</p>
+        <!-- 영역전개 / SectorTranslater -->
+        <div class="app-hero-card reveal reveal-delay-3">
+            <span class="coming-soon-badge" data-i18n="st_badge">출시 예정</span>
+            <div>
+                <div class="app-icon">
+                    <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="72" height="72" rx="18" fill="url(#grad3)"/>
+                        <defs>
+                            <linearGradient id="grad3" x1="0" y1="0" x2="72" y2="72">
+                                <stop offset="0%" stop-color="#3B4FE8"/>
+                                <stop offset="100%" stop-color="#2DD4BF"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="10" y="16" width="52" height="34" rx="4" stroke="white" stroke-width="2" fill="none" opacity="0.6"/>
+                        <rect x="18" y="24" width="22" height="14" rx="2" fill="white" opacity="0.2" stroke="white" stroke-width="1.5" stroke-dasharray="3 2"/>
+                        <path d="M44 31 L54 31" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M51 28 L54 31 L51 34" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M32 50 L36 55 L40 50" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+                        <line x1="36" y1="50" x2="36" y2="55" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+                        <line x1="28" y1="57" x2="44" y2="57" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+                    </svg>
+                </div>
+                <h3 class="app-name" data-i18n="st_app_name">영역전개</h3>
+                <p class="app-tagline" data-i18n="st_tagline">화면 어디든, 그 자리에서 번역</p>
+                <p class="app-description" data-i18n="st_desc">화면 위 어느 영역이든 드래그로 선택하면 즉시 OCR + 번역.<br>번역문이 원문 위에 자연스럽게 오버레이되어 작업 흐름을 방해하지 않습니다.<br>Xcode · PDF · 웹 어디서든, 보이는 텍스트라면 전부 번역합니다.</p>
+                <div class="app-tags">
+                    <span class="tag accent" data-i18n="st_tag_macos">macOS 전용</span>
+                    <span class="tag teal" data-i18n="st_tag_ondevice">온디바이스</span>
+                    <span class="tag accent" data-i18n="st_tag_ocr">Vision OCR</span>
+                    <span class="tag teal" data-i18n="st_tag_overlay">오버레이 번역</span>
                 </div>
             </div>
-            <div class="feature-card-wrap reveal reveal-delay-1">
-                <div class="feature-card">
-                    <span class="feature-icon">⚡</span>
-                    <h3 class="feature-name" data-i18n="f2_name">무제한 녹음</h3>
-                    <p class="feature-text" data-i18n="f2_text">Apple 내장 STT 기반 실시간 처리로 1분 제한 없이 긴 강의와 회의도 끊김 없이 녹음합니다.</p>
-                </div>
-            </div>
-            <div class="feature-card-wrap reveal reveal-delay-2">
-                <div class="feature-card">
-                    <span class="feature-icon">🏝️</span>
-                    <h3 class="feature-name" data-i18n="f3_name">Dynamic Island</h3>
-                    <p class="feature-text" data-i18n="f3_text">녹음 중 Dynamic Island과 잠금화면에 Live Activity가 표시됩니다. 앱 종료 시 2초 내 자동 소멸.</p>
-                </div>
-                <span class="new-badge">NEW</span>
-            </div>
-            <div class="feature-card-wrap reveal">
-                <div class="feature-card">
-                    <span class="feature-icon">💾</span>
-                    <h3 class="feature-name" data-i18n="f4_name">자동저장 & 백그라운드 요약</h3>
-                    <p class="feature-text" data-i18n="f4_text">앱 종료 시 녹음 내용을 즉시 자동저장. 다음 실행 때 AI 요약을 자동으로 완성해 리스트에 표시합니다.</p>
-                </div>
-                <span class="new-badge">NEW</span>
-            </div>
-            <div class="feature-card-wrap reveal reveal-delay-1">
-                <div class="feature-card">
-                    <span class="feature-icon">🌐</span>
-                    <h3 class="feature-name" data-i18n="f5_name">9개 언어 지원</h3>
-                    <p class="feature-text" data-i18n="f5_text">한국어, 영어, 일본어, 중국어, 프랑스어 등 9개 언어 STT를 설정에서 즉시 전환할 수 있습니다.</p>
-                </div>
-            </div>
-            <div class="feature-card-wrap reveal reveal-delay-2">
-                <div class="feature-card">
-                    <span class="feature-icon">🔊</span>
-                    <h3 class="feature-name" data-i18n="f6_name">요약 읽어주기</h3>
-                    <p class="feature-text" data-i18n="f6_text">TTS로 요약 결과를 음성으로 청취. 운전 중이나 이동 중에도 내용을 확인할 수 있습니다.</p>
+            <div class="app-visual">
+                <div class="overlay-demo">
+                    <div class="demo-region">
+                        <div class="demo-region-label" data-i18n="st_demo_label">선택 영역</div>
+                        <div class="demo-original">Machine learning models require large datasets for effective training and generalization.</div>
+                        <div class="demo-divider"></div>
+                        <div class="demo-translated" data-i18n="st_demo_translated">머신 러닝 모델은 효과적인 학습과 일반화를 위해 대규모 데이터셋이 필요합니다.</div>
+                    </div>
+                    <div class="demo-bottom">
+                        <div class="demo-lang-pair">
+                            <span>🇺🇸 EN</span>
+                            <em class="demo-arrow">→</em>
+                            <span>🇰🇷 KO</span>
+                        </div>
+                        <div class="demo-hotkey">
+                            <span class="kbd">⌥</span><span class="kbd">T</span>
+                            <span style="margin-left:4px;" data-i18n="st_demo_hotkey">단축키</span>
+                        </div>
+                    </div>
+                    <div class="demo-langs-grid">
+                        <div class="demo-lang-chip">EN</div>
+                        <div class="demo-lang-chip">KO</div>
+                        <div class="demo-lang-chip">JA</div>
+                        <div class="demo-lang-chip">ZH</div>
+                        <div class="demo-lang-chip">FR</div>
+                        <div class="demo-lang-chip">DE</div>
+                        <div class="demo-lang-chip">ES</div>
+                        <div class="demo-lang-chip" style="color:var(--text3);font-size:10px;">+14</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -501,13 +464,12 @@
         <h2 class="section-title reveal reveal-delay-1" data-i18n="sec_title_tech">외부 의존 없이,<br>Apple 생태계만으로.</h2>
         <div class="tech-strip">
             <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>SwiftUI</div>
-            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>Apple Speech Framework</div>
             <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#8B7FF4;"></span>Apple Foundation Model</div>
-            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>SwiftData</div>
-            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>ActivityKit</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>ScreenCaptureKit</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>Vision OCR</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>Translation Framework</div>
             <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#8B7FF4;"></span>AVSpeechSynthesizer</div>
-            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>Clean Architecture</div>
-            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#2DD4BF;"></span>Swift Package Manager</div>
+            <div class="tech-pill reveal reveal-delay-2"><span class="tech-dot" style="background:#6B5FE4;"></span>Swift Package Manager</div>
         </div>
     </section>
 
@@ -519,10 +481,10 @@
     <script>
         const i18n = {
             ko: {
-                nav_app: '앱 소개', nav_features: '기능', nav_tech: '기술 스택',
+                nav_app: '앱 소개', nav_tech: '기술 스택',
                 badge: 'Small studio. Big ideas.',
                 hero_sub: 'UZULIKE · Making apps that just work.',
-                hero_desc: '온디바이스 AI와 네이티브 iOS 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.',
+                hero_desc: '온디바이스 AI와 네이티브 Apple 기술로 일상을 더 스마트하게 만드는 앱을 만듭니다.',
                 hero_cta: '앱 살펴보기',
                 sec_label_app: 'Our Apps',
                 sec_title_app: 'Apple 생태계를 위한<br>두 가지 서비스',
@@ -531,27 +493,23 @@
                 mbti_tagline: '16가지 성격, 16명의 상담사',
                 mbti_desc: '당신의 MBTI에 맞춘 AI 상담사와 대화하세요.<br>각 성격 유형별 고유한 말투, 상담 스타일, 음성으로 더 따뜻하고 깊이 있는 대화를 나눌 수 있습니다.<br>완전한 프라이버시 보호로 편안하게 마음을 나누세요.',
                 tag_16mbti: '16 MBTI 상담사', tag_tts: '한국어 TTS', tag_ondevice2: '온디바이스 AI', tag_voice: '음성 입력',
-                app_tagline: 'Your AI-powered meeting partner',
-                app_desc: '녹음하면 끝. AI가 맥락을 파악해 핵심만 정리해줍니다.<br>강의·회의·계약 세 가지 모드로 상황에 딱 맞는 요약을 제공합니다.<br>앱이 종료돼도 녹음이 자동 저장되고, 다음 실행 시 AI 요약까지 자동 완성됩니다.',
-                tag_ondevice: '온디바이스 AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
-                mode1_name: '강의 모드', mode1_desc: '핵심 개념 · 주요 내용 · 핵심 정리 자동 추출',
-                mode2_name: '회의 모드', mode2_desc: '결정 사항 · 액션 아이템 · 주요 논의 정리',
-                mode3_name: '계약 모드', mode3_desc: '합의 사항 · 주요 조건 · 미합의 사항 분류',
-                f1_name: '완전 온디바이스', f1_text: 'STT와 AI 요약 모두 기기 안에서. 데이터가 서버로 나가지 않아 프라이버시가 완벽하게 보호됩니다.',
-                f2_name: '무제한 녹음', f2_text: 'Apple 내장 STT 기반 실시간 처리로 1분 제한 없이 긴 강의와 회의도 끊김 없이 녹음합니다.',
-                f3_name: 'Dynamic Island', f3_text: '녹음 중 Dynamic Island과 잠금화면에 Live Activity가 표시됩니다. 앱 종료 시 2초 내 자동 소멸.',
-                f4_name: '자동저장 & 백그라운드 요약', f4_text: '앱 종료 시 녹음 내용을 즉시 자동저장. 다음 실행 때 AI 요약을 자동으로 완성해 리스트에 표시합니다.',
-                f5_name: '9개 언어 지원', f5_text: '한국어, 영어, 일본어, 중국어, 프랑스어 등 9개 언어 STT를 설정에서 즉시 전환할 수 있습니다.',
-                f6_name: '요약 읽어주기', f6_text: 'TTS로 요약 결과를 음성으로 청취. 운전 중이나 이동 중에도 내용을 확인할 수 있습니다.',
+                st_badge: '출시 예정',
+                st_app_name: '영역전개',
+                st_tagline: '화면 어디든, 그 자리에서 번역',
+                st_desc: '화면 위 어느 영역이든 드래그로 선택하면 즉시 OCR + 번역.<br>번역문이 원문 위에 자연스럽게 오버레이되어 작업 흐름을 방해하지 않습니다.<br>Xcode · PDF · 웹 어디서든, 보이는 텍스트라면 전부 번역합니다.',
+                st_tag_macos: 'macOS 전용', st_tag_ondevice: '온디바이스', st_tag_ocr: 'Vision OCR', st_tag_overlay: '오버레이 번역',
+                st_demo_label: '선택 영역',
+                st_demo_translated: '머신 러닝 모델은 효과적인 학습과 일반화를 위해 대규모 데이터셋이 필요합니다.',
+                st_demo_hotkey: '단축키',
                 sec_label_tech: 'Technology',
                 sec_title_tech: '외부 의존 없이,<br>Apple 생태계만으로.',
             },
             en: {
-                nav_app: 'App', nav_features: 'Features', nav_tech: 'Tech Stack',
+                nav_app: 'Apps', nav_tech: 'Tech Stack',
                 badge: 'Small studio. Big ideas.',
                 hero_sub: 'UZULIKE · Making apps that just work.',
-                hero_desc: 'We build iOS apps that make everyday life smarter using on-device AI and native Apple technologies.',
-                hero_cta: 'Explore the App',
+                hero_desc: 'We build apps that make everyday life smarter using on-device AI and native Apple technologies.',
+                hero_cta: 'Explore the Apps',
                 sec_label_app: 'Our Apps',
                 sec_title_app: 'Two Services for the<br>Apple Ecosystem',
                 sec_desc_app: 'Making everyday life smarter and warmer with on-device AI.',
@@ -559,26 +517,22 @@
                 mbti_tagline: '16 Personalities, 16 Counselors',
                 mbti_desc: 'Talk with an AI counselor tailored to your MBTI type.<br>Each personality has its own unique speech style, counseling approach, and voice for deeper, warmer conversations.<br>Complete privacy protection for comfortable sharing.',
                 tag_16mbti: '16 MBTI Counselors', tag_tts: 'Korean TTS', tag_ondevice2: 'On-Device AI', tag_voice: 'Voice Input',
-                app_tagline: 'Your AI-powered meeting partner',
-                app_desc: 'Just record. AI captures context and distills what matters.<br>Three modes tailored for lectures, meetings, and negotiations.<br>Even if the app is force-quit, your recording is saved — and AI summary completes automatically on next launch.',
-                tag_ondevice: 'On-Device AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
-                mode1_name: 'Lecture', mode1_desc: 'Key concepts · Main points · Core summary',
-                mode2_name: 'Meeting', mode2_desc: 'Decisions · Action items · Key discussions',
-                mode3_name: 'Contract', mode3_desc: 'Agreements · Key terms · Unresolved items',
-                f1_name: 'Fully On-Device', f1_text: 'Both STT and AI summarization run entirely on your device. Your data never leaves.',
-                f2_name: 'Unlimited Recording', f2_text: 'Apple\'s built-in Speech framework handles real-time transcription — no 1-minute session limit.',
-                f3_name: 'Dynamic Island', f3_text: 'Live Activity appears on Dynamic Island and Lock Screen during recording. Auto-expires within 2 seconds of app termination.',
-                f4_name: 'Auto-Save & Background Summary', f4_text: 'Recording is instantly saved even if the app is force-quit. AI summary generates automatically in the background on next launch.',
-                f5_name: '9 Languages', f5_text: 'Switch STT language instantly in settings. Korean, English, Japanese, Chinese, and more.',
-                f6_name: 'Read Aloud', f6_text: 'Listen to your summaries via TTS. Catch up hands-free while on the move.',
+                st_badge: 'Coming Soon',
+                st_app_name: 'SectorTranslater',
+                st_tagline: 'Translate anything on screen, right where it is',
+                st_desc: 'Drag to select any region on screen — instant OCR and translation.<br>The result overlays directly on the original, keeping your workflow uninterrupted.<br>Works anywhere: Xcode, PDFs, browsers. If you can see it, you can translate it.',
+                st_tag_macos: 'macOS Only', st_tag_ondevice: 'On-Device', st_tag_ocr: 'Vision OCR', st_tag_overlay: 'Overlay Translation',
+                st_demo_label: 'Selected Region',
+                st_demo_translated: 'Machine learning models require large datasets for effective training and generalization.',
+                st_demo_hotkey: 'Hotkey',
                 sec_label_tech: 'Technology',
                 sec_title_tech: 'Zero dependencies.<br>Pure Apple ecosystem.',
             },
             ja: {
-                nav_app: 'アプリ紹介', nav_features: '機能', nav_tech: '技術スタック',
+                nav_app: 'アプリ紹介', nav_tech: '技術スタック',
                 badge: 'Small studio. Big ideas.',
                 hero_sub: 'UZULIKE · Making apps that just work.',
-                hero_desc: 'オンデバイスAIとネイティブiOS技術で、日常をスマートにするアプリを作っています。',
+                hero_desc: 'オンデバイスAIとネイティブApple技術で、日常をスマートにするアプリを作っています。',
                 hero_cta: 'アプリを見る',
                 sec_label_app: 'Our Apps',
                 sec_title_app: 'Appleエコシステムのための<br>2つのサービス',
@@ -587,26 +541,22 @@
                 mbti_tagline: '16の性格、16人のカウンセラー',
                 mbti_desc: 'あなたのMBTIに合わせたAIカウンセラーと会話してください。<br>各性格タイプごとに独自の話し方、カウンセリングスタイル、音声を持つより深く温かい会話ができます。<br>完全なプライバシー保護で安心して心を共有できます。',
                 tag_16mbti: '16MBTIカウンセラー', tag_tts: '日本語TTS', tag_ondevice2: 'オンデバイスAI', tag_voice: '音声入力',
-                app_tagline: 'Your AI-powered meeting partner',
-                app_desc: '録音するだけ。AIが文脈を把握し、要点だけを整理します。<br>講義・会議・契約の3モードで最適な要約を提供。<br>アプリが強制終了されても録音は自動保存され、次回起動時にAI要約が自動完成します。',
-                tag_ondevice: 'オンデバイスAI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
-                mode1_name: '講義モード', mode1_desc: '主要概念・主な内容・核心まとめを自動抽出',
-                mode2_name: '会議モード', mode2_desc: '決定事項・アクションアイテム・主要議論を整理',
-                mode3_name: '契約モード', mode3_desc: '合意事項・主要条件・未合意事項を分類',
-                f1_name: '完全オンデバイス', f1_text: 'STTもAI要約もすべてデバイス内で処理。データが外に出ません。',
-                f2_name: '無制限録音', f2_text: 'Apple内蔵のSpeech Frameworkでリアルタイム処理。1分制限なし。',
-                f3_name: 'Dynamic Island', f3_text: '録音中はDynamic Islandとロック画面にLive Activityが表示。アプリ終了後2秒以内に自動消滅。',
-                f4_name: '自動保存 & バックグラウンド要約', f4_text: 'アプリが強制終了されても録音を即座に自動保存。次回起動時にAI要約をバックグラウンドで自動完成。',
-                f5_name: '9言語対応', f5_text: '韓国語、英語、日本語、中国語など9言語のSTTを即時切替。',
-                f6_name: '読み上げ機能', f6_text: 'TTSで要約を音声再生。移動中もハンズフリーで確認。',
+                st_badge: 'Coming Soon',
+                st_app_name: '영역전개',
+                st_tagline: '画面のどこでも、その場で翻訳',
+                st_desc: '画面上のどこでもドラッグで選択すれば、即座にOCR＋翻訳。<br>翻訳結果が原文の上にオーバーレイ表示され、作業の流れを妨げません。<br>Xcode・PDF・Webどこでも、見えるテキストならすべて翻訳できます。',
+                st_tag_macos: 'macOS専用', st_tag_ondevice: 'オンデバイス', st_tag_ocr: 'Vision OCR', st_tag_overlay: 'オーバーレイ翻訳',
+                st_demo_label: '選択領域',
+                st_demo_translated: '機械学習モデルは、効果的な学習と汎化のために大規模なデータセットが必要です。',
+                st_demo_hotkey: 'ショートカット',
                 sec_label_tech: 'Technology',
                 sec_title_tech: '外部依存ゼロ。<br>Appleエコシステムのみ。',
             },
             zh: {
-                nav_app: '应用介绍', nav_features: '功能', nav_tech: '技术栈',
+                nav_app: '应用介绍', nav_tech: '技术栈',
                 badge: 'Small studio. Big ideas.',
                 hero_sub: 'UZULIKE · Making apps that just work.',
-                hero_desc: '利用设备端AI和原生iOS技术，打造让日常生活更智能的应用程序。',
+                hero_desc: '利用设备端AI和原生Apple技术，打造让日常生活更智能的应用程序。',
                 hero_cta: '探索应用',
                 sec_label_app: 'Our Apps',
                 sec_title_app: 'Apple生态系统的<br>两个服务',
@@ -615,18 +565,14 @@
                 mbti_tagline: '16种性格，16位心理咨询师',
                 mbti_desc: '与根据您的MBTI类型定制的AI咨询师交谈。<br>每种性格都拥有独特的讲话方式、咨询风格和语音，可以进行更深层、更温暖的对话。<br>完全的隐私保护，安心分享内心。',
                 tag_16mbti: '16个MBTI咨询师', tag_tts: '中文TTS', tag_ondevice2: '设备端AI', tag_voice: '语音输入',
-                app_tagline: 'Your AI-powered meeting partner',
-                app_desc: '只需录音。AI理解上下文，提炼关键内容。<br>讲座、会议、合同三种模式，精准匹配每种场景。<br>即使强制退出应用，录音也会自动保存，下次启动时AI摘要自动完成。',
-                tag_ondevice: '设备端AI', tag_native: 'iOS Native', tag_swiftui: 'SwiftUI', tag_dynamicisland: 'Dynamic Island',
-                mode1_name: '讲座模式', mode1_desc: '关键概念·主要内容·核心整理自动提取',
-                mode2_name: '会议模式', mode2_desc: '决策事项·行动项·主要讨论整理',
-                mode3_name: '合同模式', mode3_desc: '达成事项·主要条款·未决事项分类',
-                f1_name: '完全本地处理', f1_text: 'STT与AI摘要全在设备内完成，数据不会离开您的手机。',
-                f2_name: '无限录音', f2_text: '基于Apple内置语音识别实时处理，无1分钟限制。',
-                f3_name: 'Dynamic Island', f3_text: '录音期间Dynamic Island和锁屏上显示Live Activity。应用终止后2秒内自动消失。',
-                f4_name: '自动保存 & 后台摘要', f4_text: '即使强制退出应用，录音也会立即自动保存。下次启动时在后台自动完成AI摘要。',
-                f5_name: '支持9种语言', f5_text: '韩语、英语、日语、中国语等9种语言，随时切换。',
-                f6_name: '朗读功能', f6_text: '通过TTS语音播放摘要，移动途中也能轻松获取内容。',
+                st_badge: '即将上线',
+                st_app_name: '영역전개',
+                st_tagline: '屏幕任意区域，即时翻译',
+                st_desc: '拖动选择屏幕上的任意区域，立即进行OCR+翻译。<br>翻译结果直接叠加在原文上方，不影响工作流程。<br>无论是Xcode、PDF还是浏览器，可见的文字均可翻译。',
+                st_tag_macos: '仅限macOS', st_tag_ondevice: '设备端处理', st_tag_ocr: 'Vision OCR', st_tag_overlay: '叠加翻译',
+                st_demo_label: '选择区域',
+                st_demo_translated: '机器学习模型需要大规模数据集才能进行有效的训练和泛化。',
+                st_demo_hotkey: '快捷键',
                 sec_label_tech: 'Technology',
                 sec_title_tech: '零外部依赖。<br>纯Apple生态系统。',
             }
